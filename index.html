@@ -1,0 +1,3081 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>عراق ستار - نظام الإدارة الديناميكي</title>
+    <style>
+        :root {
+            --primary: #1a2980;
+            --secondary: #26d0ce;
+            --success: #4CAF50;
+            --warning: #FF9800;
+            --danger: #f44336;
+            --dark: #2c3e50;
+            --light: #ecf0f1;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'Arial', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            min-height: 100vh;
+            transition: all 0.3s ease;
+        }
+
+        .login-page {
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            transition: all 0.5s ease;
+        }
+
+        .login-container {
+            background: white;
+            width: 100%;
+            max-width: 400px;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            animation: slideUp 0.8s ease-out;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .login-header {
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .login-logo {
+            width: 80px;
+            height: 80px;
+            background: white;
+            border-radius: 50%;
+            margin: 0 auto 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            color: var(--primary);
+            font-weight: bold;
+        }
+
+        .login-body {
+            padding: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--dark);
+            font-weight: 600;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .btn {
+            padding: 14px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            color: white;
+            width: 100%;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(26, 41, 128, 0.3);
+        }
+
+        .btn-secondary {
+            background: #f0f0f0;
+            color: var(--dark);
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        .error-message {
+            background: #ffebee;
+            color: #c62828;
+            padding: 10px;
+            border-radius: 6px;
+            margin-bottom: 15px;
+            text-align: center;
+            display: none;
+        }
+
+        .dashboard {
+            display: none;
+            min-height: 100vh;
+            background: var(--light);
+        }
+
+        .sidebar {
+            position: fixed;
+            right: 0;
+            top: 0;
+            width: 250px;
+            height: 100vh;
+            background: linear-gradient(to bottom, var(--primary), var(--secondary));
+            color: white;
+            padding: 20px 0;
+            transition: transform 0.3s ease;
+            z-index: 1000;
+        }
+
+        .logo-section {
+            text-align: center;
+            padding: 20px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .logo {
+            width: 60px;
+            height: 60px;
+            background: white;
+            border-radius: 50%;
+            margin: 0 auto 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 30px;
+            color: var(--primary);
+            font-weight: bold;
+        }
+
+        .nav-menu {
+            list-style: none;
+            padding: 20px 0;
+        }
+
+        .nav-item {
+            padding: 15px 25px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border-right: 4px solid transparent;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .nav-item:hover {
+            background: rgba(255,255,255,0.1);
+            border-right: 4px solid white;
+        }
+
+        .nav-item.active {
+            background: rgba(255,255,255,0.15);
+            border-right: 4px solid #FFD700;
+        }
+
+        .nav-icon {
+            font-size: 20px;
+        }
+
+        .user-info {
+            position: absolute;
+            bottom: 80px;
+            right: 0;
+            left: 0;
+            text-align: center;
+            padding: 20px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .logout-btn {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            left: 20px;
+            background: rgba(255,255,255,0.1);
+            border: none;
+            color: white;
+            padding: 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .logout-btn:hover {
+            background: rgba(255,255,255,0.2);
+        }
+
+        .main-content {
+            margin-right: 250px;
+            padding: 20px;
+            min-height: 100vh;
+            transition: margin 0.3s ease;
+        }
+
+        .top-bar {
+            background: white;
+            padding: 15px 25px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 20px;
+            z-index: 100;
+        }
+
+        .page-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .control-panel {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+
+        .control-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .control-buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .control-btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .control-btn.active {
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            color: white;
+        }
+
+        .grid-view {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+
+        .table-view {
+            width: 100%;
+            overflow-x: auto;
+            margin-top: 20px;
+        }
+
+        .table-view table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 800px;
+        }
+
+        .table-view th {
+            background: var(--light);
+            padding: 15px;
+            text-align: right;
+            font-weight: 600;
+            color: var(--dark);
+            border-bottom: 2px solid #ddd;
+        }
+
+        .table-view td {
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+            color: #555;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 8px;
+        }
+
+        .action-btn {
+            padding: 6px 12px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .action-btn.edit {
+            background: #e3f2fd;
+            color: #1565c0;
+        }
+
+        .action-btn.delete {
+            background: #ffebee;
+            color: #c62828;
+        }
+
+        .action-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .modal-content {
+            background: white;
+            width: 90%;
+            max-width: 600px;
+            border-radius: 15px;
+            overflow: hidden;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            color: white;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-body {
+            padding: 30px;
+        }
+
+        .search-box {
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 12px 45px 12px 15px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+
+        .filter-section {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 8px 16px;
+            border: 2px solid #ddd;
+            background: white;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .filter-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .customization-panel {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+
+        .theme-selector {
+            display: flex;
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .theme-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            border: 2px solid #ddd;
+            cursor: pointer;
+        }
+
+        .theme-btn.blue {
+            background: linear-gradient(135deg, #1a2980, #26d0ce);
+        }
+
+        .theme-btn.green {
+            background: linear-gradient(135deg, #2E7D32, #4CAF50);
+        }
+
+        .theme-btn.purple {
+            background: linear-gradient(135deg, #6A1B9A, #9C27B0);
+        }
+
+        .theme-btn.dark {
+            background: linear-gradient(135deg, #212121, #424242);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            position: relative;
+            overflow: hidden;
+            border-top: 4px solid;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
+            border-radius: 0 0 0 100%;
+        }
+
+        .stat-card.total { border-color: var(--primary); }
+        .stat-card.active { border-color: var(--success); }
+        .stat-card.pending { border-color: var(--warning); }
+        .stat-card.revenue { border-color: var(--secondary); }
+
+        .stat-value {
+            font-size: 36px;
+            font-weight: bold;
+            margin: 10px 0;
+            color: var(--primary);
+        }
+
+        .activity-panel {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+
+        .activity-filters {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+
+        .activity-filter-btn {
+            padding: 6px 12px;
+            border: 1px solid #ddd;
+            background: white;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+
+        .activity-filter-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .activity-log {
+            margin-top: 20px;
+            max-height: 500px;
+            overflow-y: auto;
+            border: 1px solid #eee;
+            border-radius: 8px;
+            padding: 10px;
+        }
+
+        .activity-item {
+            padding: 15px;
+            border-bottom: 1px solid #f5f5f5;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            transition: all 0.3s;
+        }
+
+        .activity-item:hover {
+            background: #f9f9f9;
+        }
+
+        .activity-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+
+        .activity-icon.login { background: #e3f2fd; color: #1565c0; }
+        .activity-icon.logout { background: #ffebee; color: #c62828; }
+        .activity-icon.add { background: #e8f5e9; color: #2E7D32; }
+        .activity-icon.edit { background: #fff3e0; color: #EF6C00; }
+        .activity-icon.delete { background: #fce4ec; color: #C2185B; }
+        .activity-icon.page { background: #f3e5f5; color: #7B1FA2; }
+
+        .activity-details {
+            flex: 1;
+        }
+
+        .activity-user {
+            font-weight: bold;
+            color: var(--dark);
+        }
+
+        .activity-action {
+            color: #666;
+            margin-top: 3px;
+            font-size: 14px;
+        }
+
+        .activity-time {
+            color: #999;
+            font-size: 12px;
+            direction: ltr;
+            text-align: left;
+            min-width: 120px;
+        }
+
+        .online-users {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+
+        .online-user-badge {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .online-indicator {
+            width: 8px;
+            height: 8px;
+            background: #4CAF50;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(100%);
+            }
+            
+            .sidebar.active {
+                transform: translateX(0);
+            }
+            
+            .main-content {
+                margin-right: 0;
+            }
+            
+            .menu-toggle {
+                display: block !important;
+            }
+            
+            .grid-view {
+                grid-template-columns: 1fr;
+            }
+            
+            .control-buttons {
+                flex-direction: column;
+            }
+            
+            .control-btn {
+                width: 100%;
+            }
+            
+            .activity-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+            
+            .activity-time {
+                text-align: right;
+                width: 100%;
+            }
+        }
+
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 24px;
+            color: var(--primary);
+            cursor: pointer;
+        }
+
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(38, 208, 206, 0.4); }
+            70% { box-shadow: 0 0 0 10px rgba(38, 208, 206, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(38, 208, 206, 0); }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .progress-bar {
+            height: 6px;
+            background: #eee;
+            border-radius: 3px;
+            margin: 10px 0;
+            overflow: hidden;
+        }
+
+        .progress {
+            height: 100%;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            width: 0%;
+            transition: width 1s ease;
+        }
+
+        .badge {
+            background: #4CAF50;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            display: inline-block;
+        }
+
+        .users-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .user-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .user-role {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            margin-top: 10px;
+        }
+
+        .role-admin { background: #2196F3; color: white; }
+        .role-editor { background: #4CAF50; color: white; }
+        .role-viewer { background: #FF9800; color: white; }
+
+        .activity-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .activity-stat-card {
+            background: white;
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+
+        .activity-stat-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--primary);
+            margin: 5px 0;
+        }
+
+        .activity-stat-label {
+            font-size: 12px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-page" id="loginPage">
+        <div class="login-container">
+            <div class="login-header">
+                <div class="login-logo">ع</div>
+                <h1>عراق ستار</h1>
+                <p>نظام الإدارة الديناميكي</p>
+            </div>
+            
+            <div class="login-body">
+                <div class="error-message" id="loginError"></div>
+                
+                <form id="loginForm">
+                    <div class="form-group">
+                        <label>اسم المستخدم</label>
+                        <input type="text" id="username" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>كلمة المرور</label>
+                        <input type="password" id="password" required>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary">
+                        تسجيل الدخول
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="dashboard" id="dashboard">
+        <div class="sidebar" id="sidebar">
+            <div class="logo-section">
+                <div class="logo">ع</div>
+                <h3>عراق ستار</h3>
+                <p style="font-size: 12px; opacity: 0.8;">نظام ديناميكي متكامل</p>
+            </div>
+            
+            <ul class="nav-menu">
+                <li class="nav-item active" data-page="dashboard">
+                    <span class="nav-icon">📊</span>
+                    <span>اللوحة الرئيسية</span>
+                </li>
+                <li class="nav-item" data-page="activity">
+                    <span class="nav-icon">👁️</span>
+                    <span>نشاط المستخدمين</span>
+                </li>
+                <li class="nav-item" data-page="subscribers">
+                    <span class="nav-icon">👥</span>
+                    <span>المشتركين</span>
+                </li>
+                <li class="nav-item" data-page="services">
+                    <span class="nav-icon">🛠️</span>
+                    <span>الخدمات</span>
+                </li>
+                <li class="nav-item" data-page="financial">
+                    <span class="nav-icon">💰</span>
+                    <span>المالية</span>
+                </li>
+                <li class="nav-item" data-page="users">
+                    <span class="nav-icon">👨‍💼</span>
+                    <span>المستخدمين</span>
+                </li>
+                <li class="nav-item" data-page="settings">
+                    <span class="nav-icon">⚙️</span>
+                    <span>الإعدادات</span>
+                </li>
+            </ul>
+            
+            <div class="user-info">
+                <div style="font-size: 14px; opacity: 0.9;">مستخدم</div>
+                <div id="currentUser" style="font-weight: bold; margin-top: 5px;">...</div>
+                <div id="currentRole" style="font-size: 12px; opacity: 0.8; margin-top: 5px;"></div>
+                <div id="loginTime" style="font-size: 11px; color: #4CAF50; margin-top: 5px;"></div>
+            </div>
+            
+            <button class="logout-btn" id="logoutBtn">
+                تسجيل الخروج
+            </button>
+        </div>
+
+        <div class="main-content">
+            <div class="top-bar">
+                <button class="menu-toggle" id="menuToggle">
+                    ☰
+                </button>
+                <h1 id="pageTitle">اللوحة الرئيسية</h1>
+                <div style="display: flex; gap: 15px; align-items: center;">
+                    <div id="currentDate" style="color: #666;"></div>
+                    <div id="onlineStatus" style="display: flex; align-items: center; gap: 5px; color: var(--success);">
+                        <span style="width: 10px; height: 10px; background: var(--success); border-radius: 50%;"></span>
+                        <span>متصل</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="control-panel">
+                <div class="control-header">
+                    <h2>نظام التحكم الديناميكي</h2>
+                    <div class="control-buttons">
+                        <button class="control-btn active" onclick="setViewMode('grid')">عرض البطاقات</button>
+                        <button class="control-btn" onclick="setViewMode('table')">عرض الجدول</button>
+                        <button class="control-btn" onclick="refreshData()">تحديث البيانات</button>
+                        <button class="control-btn" onclick="exportAllData()">تصدير الكل</button>
+                    </div>
+                </div>
+                
+                <div class="search-box">
+                    <input type="text" id="globalSearch" placeholder="🔍 ابحث عن أي شيء..." oninput="performSearch(this.value)">
+                </div>
+                
+                <div class="filter-section">
+                    <button class="filter-btn active" onclick="filterData('all')">الكل</button>
+                    <button class="filter-btn" onclick="filterData('active')">نشط</button>
+                    <button class="filter-btn" onclick="filterData('pending')">معلق</button>
+                    <button class="filter-btn" onclick="filterData('inactive')">متوقف</button>
+                </div>
+            </div>
+
+            <div id="pageContent">
+                <div class="page active" id="dashboardPage">
+                    <div class="stats-grid">
+                        <div class="stat-card total">
+                            <div style="font-size: 24px; color: var(--primary); margin-bottom: 10px;">👥</div>
+                            <div class="stat-value" id="totalCount">0</div>
+                            <div class="stat-label">إجمالي المشتركين</div>
+                            <div class="progress-bar">
+                                <div class="progress" id="totalProgress"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="stat-card active">
+                            <div style="font-size: 24px; color: var(--success); margin-bottom: 10px;">✅</div>
+                            <div class="stat-value" id="activeCount">0</div>
+                            <div class="stat-label">مشتركين نشطين</div>
+                            <div class="progress-bar">
+                                <div class="progress" id="activeProgress"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="stat-card pending">
+                            <div style="font-size: 24px; color: var(--warning); margin-bottom: 10px;">⏳</div>
+                            <div class="stat-value" id="pendingCount">0</div>
+                            <div class="stat-label">في انتظار الدفع</div>
+                            <div class="progress-bar">
+                                <div class="progress" id="pendingProgress"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="stat-card revenue">
+                            <div style="font-size: 24px; color: var(--secondary); margin-bottom: 10px;">💰</div>
+                            <div class="stat-value" id="revenueCount">0 دينار</div>
+                            <div class="stat-label">إجمالي الإيرادات</div>
+                            <div class="progress-bar">
+                                <div class="progress" id="revenueProgress"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div id="dynamicView">
+                    </div>
+                </div>
+
+                <div class="page" id="activityPage">
+                    <div class="customization-panel">
+                        <h3>👁️ لوحة متابعة نشاط المستخدمين</h3>
+                        <p style="color: #666; margin-top: 10px;">تابع كل تحركات المستخدمين في النظام</p>
+                    </div>
+                    
+                    <div class="activity-stats">
+                        <div class="activity-stat-card">
+                            <div style="font-size: 20px; color: var(--primary);">👥</div>
+                            <div class="activity-stat-value" id="totalUsers">0</div>
+                            <div class="activity-stat-label">إجمالي المستخدمين</div>
+                        </div>
+                        
+                        <div class="activity-stat-card">
+                            <div style="font-size: 20px; color: var(--success);">✅</div>
+                            <div class="activity-stat-value" id="onlineUsers">0</div>
+                            <div class="activity-stat-label">متصلون الآن</div>
+                        </div>
+                        
+                        <div class="activity-stat-card">
+                            <div style="font-size: 20px; color: var(--warning);">📊</div>
+                            <div class="activity-stat-value" id="todayActivities">0</div>
+                            <div class="activity-stat-label">نشاطات اليوم</div>
+                        </div>
+                        
+                        <div class="activity-stat-card">
+                            <div style="font-size: 20px; color: var(--danger);">⚡</div>
+                            <div class="activity-stat-value" id="lastHourActivities">0</div>
+                            <div class="activity-stat-label">النشاطات (آخر ساعة)</div>
+                        </div>
+                    </div>
+                    
+                    <div class="customization-panel">
+                        <h4>👥 المستخدمين المتصلين حالياً</h4>
+                        <div class="online-users" id="onlineUsersList">
+                        </div>
+                    </div>
+                    
+                    <div class="activity-panel">
+                        <div class="control-header">
+                            <h3>📝 سجل النشاطات التفصيلي</h3>
+                            <div class="activity-filters">
+                                <button class="activity-filter-btn active" onclick="filterActivity('all')">الكل</button>
+                                <button class="activity-filter-btn" onclick="filterActivity('login')">تسجيلات دخول</button>
+                                <button class="activity-filter-btn" onclick="filterActivity('logout')">تسجيلات خروج</button>
+                                <button class="activity-filter-btn" onclick="filterActivity('add')">إضافات</button>
+                                <button class="activity-filter-btn" onclick="filterActivity('edit')">تعديلات</button>
+                                <button class="activity-filter-btn" onclick="filterActivity('delete')">حذف</button>
+                                <button class="activity-filter-btn" onclick="filterActivity('page')">تصفح الصفحات</button>
+                            </div>
+                        </div>
+                        
+                        <div class="activity-log" id="activityLog">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="page" id="subscribersPage">
+                    <div class="customization-panel">
+                        <h3>إدارة المشتركين الديناميكية</h3>
+                        <button class="btn btn-primary" onclick="openAddModal()" style="margin-top: 15px;" id="addSubscriberBtn">
+                            + إضافة مشترك جديد
+                        </button>
+                    </div>
+                    
+                    <div id="subscribersView">
+                    </div>
+                </div>
+
+                <div class="page" id="servicesPage">
+                    <div class="customization-panel">
+                        <h3>إدارة الخدمات الديناميكية</h3>
+                        <div style="margin-top: 15px;">
+                            <button class="btn btn-primary" onclick="openServiceModal()" id="addServiceBtn">
+                                + إضافة خدمة جديدة
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div id="servicesView">
+                    </div>
+                </div>
+
+                <div class="page" id="financialPage">
+                    <div class="customization-panel">
+                        <h3>التقارير المالية الديناميكية</h3>
+                    </div>
+                    
+                    <div id="financialView">
+                    </div>
+                </div>
+
+                <div class="page" id="usersPage">
+                    <div class="customization-panel">
+                        <h3>إدارة المستخدمين</h3>
+                        <button class="btn btn-primary" onclick="openUserModal()" style="margin-top: 15px;" id="addUserBtn">
+                            + إضافة مستخدم جديد
+                        </button>
+                    </div>
+                    
+                    <div id="usersView">
+                    </div>
+                </div>
+
+                <div class="page" id="settingsPage">
+                    <div class="customization-panel">
+                        <h3>الإعدادات والتخصيص</h3>
+                        
+                        <div style="margin-top: 20px;">
+                            <h4 style="margin-bottom: 15px;">تغيير الثيم</h4>
+                            <div class="theme-selector">
+                                <button class="theme-btn blue" onclick="changeTheme('blue')"></button>
+                                <button class="theme-btn green" onclick="changeTheme('green')"></button>
+                                <button class="theme-btn purple" onclick="changeTheme('purple')"></button>
+                                <button class="theme-btn dark" onclick="changeTheme('dark')"></button>
+                            </div>
+                        </div>
+                        
+                        <div style="margin-top: 20px;">
+                            <h4 style="margin-bottom: 15px;">إعدادات العرض</h4>
+                            <div style="display: flex; gap: 15px; flex-wrap: wrap;">
+                                <label style="display: flex; align-items: center; gap: 8px;">
+                                    <input type="checkbox" id="autoRefresh" checked onchange="saveSetting('autoRefresh', this.checked)">
+                                    <span>التحديث التلقائي</span>
+                                </label>
+                                <label style="display: flex; align-items: center; gap: 8px;">
+                                    <input type="checkbox" id="notifications" checked onchange="saveSetting('notifications', this.checked)">
+                                    <span>الإشعارات</span>
+                                </label>
+                                <label style="display: flex; align-items: center; gap: 8px;">
+                                    <input type="checkbox" id="logActivities" checked onchange="saveSetting('logActivities', this.checked)">
+                                    <span>تسجيل النشاطات</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div style="margin-top: 30px; padding: 20px; background: #f9f9f9; border-radius: 8px;">
+                            <h4 style="margin-bottom: 15px;">نسخ احتياطي</h4>
+                            <div style="display: flex; gap: 10px;">
+                                <button class="btn btn-primary" onclick="backupData()">
+                                    📥 إنشاء نسخة احتياطية
+                                </button>
+                                <button class="btn btn-secondary" onclick="restoreData()">
+                                    📤 استعادة نسخة
+                                </button>
+                            </div>
+                        </div>
+
+                        <div style="margin-top: 30px; padding: 20px; background: #f9f9f9; border-radius: 8px;">
+                            <h4 style="margin-bottom: 15px;">تقارير النشاطات</h4>
+                            <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                                <button class="btn btn-secondary" onclick="exportActivityLog()">
+                                    📄 تصدير سجل النشاطات
+                                </button>
+                                <button class="btn btn-secondary" onclick="clearOldActivities()">
+                                    🗑️ مسح النشاطات القديمة
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="addModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalTitle">إضافة مشترك جديد</h3>
+                <button class="close-modal" onclick="closeModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="addForm">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                        <div>
+                            <label>الاسم الكامل</label>
+                            <input type="text" id="nameInput" required>
+                        </div>
+                        <div>
+                            <label>رقم الهاتف</label>
+                            <input type="tel" id="phoneInput" required>
+                        </div>
+                    </div>
+                    
+                    <div style="margin-top: 15px;">
+                        <label>البريد الإلكتروني</label>
+                        <input type="email" id="emailInput">
+                    </div>
+                    
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 15px;">
+                        <div>
+                            <label>الخدمة</label>
+                            <select id="serviceInput" required>
+                                <option value="">اختر الخدمة</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label>السعر (دينار)</label>
+                            <input type="number" id="priceInput" required>
+                        </div>
+                    </div>
+                    
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 15px;">
+                        <div>
+                            <label>المحافظة</label>
+                            <select id="governorateInput" required>
+                                <option value="">اختر المحافظة</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label>الحالة</label>
+                            <select id="statusInput" required>
+                                <option value="active">نشط</option>
+                                <option value="pending">معلق</option>
+                                <option value="inactive">متوقف</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div style="margin-top: 20px;">
+                        <label>ملاحظات</label>
+                        <textarea id="notesInput" style="width: 100%; padding: 10px; border: 2px solid #ddd; border-radius: 8px; height: 80px;"></textarea>
+                    </div>
+                    
+                    <div style="display: flex; gap: 10px; margin-top: 25px;">
+                        <button type="submit" class="btn btn-primary" style="flex: 1;">حفظ</button>
+                        <button type="button" class="btn btn-secondary" onclick="closeModal()" style="flex: 1;">إلغاء</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="userModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="userModalTitle">إضافة مستخدم جديد</h3>
+                <button class="close-modal" onclick="closeUserModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="userForm">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                        <div>
+                            <label>اسم المستخدم</label>
+                            <input type="text" id="userNameInput" required>
+                        </div>
+                        <div>
+                            <label>كلمة المرور</label>
+                            <input type="password" id="userPasswordInput" required>
+                        </div>
+                    </div>
+                    
+                    <div style="margin-top: 15px;">
+                        <label>الاسم الكامل</label>
+                        <input type="text" id="userFullNameInput" required>
+                    </div>
+                    
+                    <div style="margin-top: 15px;">
+                        <label>الدور</label>
+                        <select id="userRoleInput" required>
+                            <option value="admin">مدير النظام</option>
+                            <option value="editor">محرر</option>
+                            <option value="viewer">مشاهد</option>
+                        </select>
+                    </div>
+                    
+                    <div style="margin-top: 15px;">
+                        <label>البريد الإلكتروني</label>
+                        <input type="email" id="userEmailInput">
+                    </div>
+                    
+                    <div style="display: flex; gap: 10px; margin-top: 25px;">
+                        <button type="submit" class="btn btn-primary" style="flex: 1;">حفظ</button>
+                        <button type="button" class="btn btn-secondary" onclick="closeUserModal()" style="flex: 1;">إلغاء</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="serviceModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="serviceModalTitle">إضافة خدمة جديدة</h3>
+                <button class="close-modal" onclick="closeServiceModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="serviceForm">
+                    <div>
+                        <label>اسم الخدمة</label>
+                        <input type="text" id="serviceNameInput" required>
+                    </div>
+                    
+                    <div style="margin-top: 15px;">
+                        <label>الفئة</label>
+                        <select id="serviceCategoryInput" required>
+                            <option value="">اختر الفئة</option>
+                            <option value="تطوير">تطوير</option>
+                            <option value="تصميم">تصميم</option>
+                            <option value="استضافة">استضافة</option>
+                            <option value="تسويق">تسويق</option>
+                        </select>
+                    </div>
+                    
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 15px;">
+                        <div>
+                            <label>السعر الأدنى (دينار)</label>
+                            <input type="number" id="serviceMinPrice" required>
+                        </div>
+                        <div>
+                            <label>السعر الأقصى (دينار)</label>
+                            <input type="number" id="serviceMaxPrice" required>
+                        </div>
+                    </div>
+                    
+                    <div style="margin-top: 15px;">
+                        <label>وصف الخدمة</label>
+                        <textarea id="serviceDescription" style="width: 100%; padding: 10px; border: 2px solid #ddd; border-radius: 8px; height: 100px;"></textarea>
+                    </div>
+                    
+                    <div style="display: flex; gap: 10px; margin-top: 25px;">
+                        <button type="submit" class="btn btn-primary" style="flex: 1;">حفظ</button>
+                        <button type="button" class="btn btn-secondary" onclick="closeServiceModal()" style="flex: 1;">إلغاء</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        class DynamicManager {
+            constructor() {
+                this.users = this.loadData('users') || this.getDefaultUsers();
+                this.subscribers = this.loadData('subscribers') || [];
+                this.services = this.loadData('services') || this.getDefaultServices();
+                this.financialData = this.loadData('financial') || [];
+                this.settings = this.loadData('settings') || this.getDefaultSettings();
+                this.activityLog = this.loadData('activityLog') || [];
+                this.onlineUsers = this.loadData('onlineUsers') || [];
+                
+                this.currentView = 'grid';
+                this.currentFilter = 'all';
+                this.currentTheme = this.settings.theme || 'blue';
+                this.editingId = null;
+                this.currentUser = null;
+                this.userLoginTime = null;
+                this.currentActivityFilter = 'all';
+                
+                this.initialize();
+            }
+
+            initialize() {
+                this.setupEventListeners();
+                this.updateDate();
+                this.applyTheme();
+                this.setupRealTimeUpdates();
+                this.checkLogin();
+            }
+
+            setupEventListeners() {
+                document.getElementById('loginForm').addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    this.handleLogin();
+                });
+
+                document.getElementById('logoutBtn').addEventListener('click', () => this.logout());
+
+                document.querySelectorAll('.nav-item').forEach(item => {
+                    item.addEventListener('click', () => {
+                        if (this.currentUser) {
+                            const page = item.getAttribute('data-page');
+                            this.switchPage(page);
+                        }
+                    });
+                });
+
+                document.getElementById('menuToggle').addEventListener('click', () => {
+                    document.getElementById('sidebar').classList.toggle('active');
+                });
+
+                document.getElementById('addForm').addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    this.saveSubscriber();
+                });
+
+                document.getElementById('userForm').addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    this.saveUser();
+                });
+
+                document.getElementById('serviceForm').addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    this.saveService();
+                });
+
+                setInterval(() => {
+                    if (this.settings.autoRefresh && this.currentUser) {
+                        this.renderAll();
+                    }
+                }, 30000);
+
+                window.addEventListener('online', () => this.updateOnlineStatus());
+                window.addEventListener('offline', () => this.updateOnlineStatus());
+
+                window.addEventListener('beforeunload', () => {
+                    if (this.currentUser) {
+                        this.logoutActivity('انتهاء الجلسة', true);
+                    }
+                });
+            }
+
+            setupRealTimeUpdates() {
+                setInterval(() => {
+                    this.updateDate();
+                    this.updateLoginTimeDisplay();
+                }, 60000);
+
+                setInterval(() => {
+                    this.updateOnlineUsers();
+                }, 10000);
+            }
+
+            getDefaultUsers() {
+                return [
+                    {
+                        id: 1,
+                        username: 'admin',
+                        password: 'admin123',
+                        fullName: 'الأسـتاذ حسين الزبيدي',
+                        role: 'admin',
+                        email: 'admin@iraqstar.iq',
+                        created: new Date().toISOString(),
+                        lastLogin: null,
+                        ipAddress: '127.0.0.1'
+                    }
+                ];
+            }
+
+            getDefaultServices() {
+                return [
+                    { id: 1, name: "برمجة مواقع", priceRange: "200,000 - 1,000,000", category: "تطوير", description: "تصميم وبرمجة مواقع احترافية" },
+                    { id: 2, name: "تصميم جرافيك", priceRange: "50,000 - 200,000", category: "تصميم", description: "تصميم شعارات ومواد دعائية" },
+                    { id: 3, name: "استضافة مواقع", priceRange: "50,000 - 500,000", category: "استضافة", description: "استضافة مواقع مع دعم فني" },
+                    { id: 4, name: "تطوير تطبيقات", priceRange: "500,000 - 5,000,000", category: "تطوير", description: "تطوير تطبيقات موبايل وسطح مكتب" }
+                ];
+            }
+
+            getDefaultSettings() {
+                return {
+                    theme: 'blue',
+                    autoRefresh: true,
+                    notifications: true,
+                    logActivities: true
+                };
+            }
+
+            loadData(key) {
+                const data = localStorage.getItem(key);
+                try {
+                    return data ? JSON.parse(data) : null;
+                } catch {
+                    return null;
+                }
+            }
+
+            saveData(key, data) {
+                localStorage.setItem(key, JSON.stringify(data));
+            }
+
+            handleLogin() {
+                const username = document.getElementById('username').value;
+                const password = document.getElementById('password').value;
+                
+                const user = this.users.find(u => u.username === username && u.password === password);
+                
+                if (user) {
+                    this.currentUser = user;
+                    this.userLoginTime = new Date();
+                    localStorage.setItem('currentUser', JSON.stringify(user));
+                    
+                    user.lastLogin = new Date().toISOString();
+                    this.saveData('users', this.users);
+                    
+                    this.logActivity('login', `قام ${user.fullName} بتسجيل الدخول إلى النظام`);
+                    this.addOnlineUser(user);
+                    this.showDashboard();
+                    this.showMessage('تم تسجيل الدخول بنجاح', 'success');
+                } else {
+                    this.showError('اسم المستخدم أو كلمة المرور غير صحيحة');
+                }
+            }
+
+            checkLogin() {
+                const savedUser = localStorage.getItem('currentUser');
+                if (savedUser) {
+                    try {
+                        this.currentUser = JSON.parse(savedUser);
+                        const userExists = this.users.some(u => u.id === this.currentUser.id);
+                        
+                        if (userExists) {
+                            this.userLoginTime = new Date();
+                            this.addOnlineUser(this.currentUser);
+                            this.logActivity('login', `استعادة جلسة ${this.currentUser.fullName}`);
+                            this.showDashboard();
+                        } else {
+                            localStorage.removeItem('currentUser');
+                            this.currentUser = null;
+                        }
+                    } catch {
+                        localStorage.removeItem('currentUser');
+                    }
+                }
+            }
+
+            logout() {
+                if (confirm('هل تريد تسجيل الخروج؟')) {
+                    if (this.currentUser) {
+                        const sessionDuration = Math.floor((new Date() - this.userLoginTime) / 1000);
+                        this.logActivity('logout', `قام ${this.currentUser.fullName} بتسجيل الخروج من النظام (مدة الجلسة: ${this.formatDuration(sessionDuration)})`);
+                        this.removeOnlineUser(this.currentUser.id);
+                    }
+                    
+                    this.currentUser = null;
+                    localStorage.removeItem('currentUser');
+                    document.getElementById('dashboard').style.display = 'none';
+                    document.getElementById('loginPage').style.display = 'flex';
+                    document.getElementById('username').value = '';
+                    document.getElementById('password').value = '';
+                    this.showMessage('تم تسجيل الخروج', 'success');
+                }
+            }
+
+            logoutActivity(reason = 'انتهاء الجلسة', silent = false) {
+                if (this.currentUser) {
+                    const sessionDuration = Math.floor((new Date() - this.userLoginTime) / 1000);
+                    this.logActivity('logout', `${this.currentUser.fullName} - ${reason} (مدة الجلسة: ${this.formatDuration(sessionDuration)})`);
+                    this.removeOnlineUser(this.currentUser.id);
+                }
+            }
+
+            formatDuration(seconds) {
+                if (seconds < 60) {
+                    return `${seconds} ثانية`;
+                } else if (seconds < 3600) {
+                    const minutes = Math.floor(seconds / 60);
+                    return `${minutes} دقيقة`;
+                } else {
+                    const hours = Math.floor(seconds / 3600);
+                    const minutes = Math.floor((seconds % 3600) / 60);
+                    return `${hours} ساعة ${minutes} دقيقة`;
+                }
+            }
+
+            showDashboard() {
+                document.getElementById('loginPage').style.display = 'none';
+                document.getElementById('dashboard').style.display = 'block';
+                
+                document.getElementById('currentUser').textContent = this.currentUser.fullName;
+                document.getElementById('currentRole').textContent = this.getRoleText(this.currentUser.role);
+                this.updateLoginTimeDisplay();
+                
+                this.checkPermissions();
+                this.renderAll();
+            }
+
+            updateLoginTimeDisplay() {
+                if (this.userLoginTime) {
+                    const now = new Date();
+                    const diffMs = now - this.userLoginTime;
+                    const diffMins = Math.floor(diffMs / 60000);
+                    
+                    let timeText;
+                    if (diffMins < 1) {
+                        timeText = 'الآن';
+                    } else if (diffMins < 60) {
+                        timeText = `قبل ${diffMins} دقيقة`;
+                    } else {
+                        const diffHours = Math.floor(diffMins / 60);
+                        timeText = `قبل ${diffHours} ساعة`;
+                    }
+                    
+                    document.getElementById('loginTime').textContent = `🕒 متصل منذ: ${timeText}`;
+                }
+            }
+
+            getRoleText(role) {
+                const roles = {
+                    'admin': 'مطور النظام',
+                    'editor': 'ادمن',
+                    'viewer': 'زبون'
+                };
+                return roles[role] || 'مستخدم';
+            }
+
+            checkPermissions() {
+                const isAdmin = this.currentUser.role === 'admin';
+                const isEditor = this.currentUser.role === 'editor' || isAdmin;
+                
+                const activityNavItem = document.querySelector('.nav-item[data-page="activity"]');
+                if (activityNavItem) activityNavItem.style.display = isEditor ? 'flex' : 'none';
+                
+                const usersNavItem = document.querySelector('.nav-item[data-page="users"]');
+                const addUserBtn = document.getElementById('addUserBtn');
+                
+                if (usersNavItem) usersNavItem.style.display = isAdmin ? 'flex' : 'none';
+                if (addUserBtn) addUserBtn.style.display = isAdmin ? 'block' : 'none';
+                
+                const addSubscriberBtn = document.getElementById('addSubscriberBtn');
+                if (addSubscriberBtn) addSubscriberBtn.style.display = isEditor ? 'block' : 'none';
+                
+                const addServiceBtn = document.getElementById('addServiceBtn');
+                if (addServiceBtn) addServiceBtn.style.display = isEditor ? 'block' : 'none';
+            }
+
+            showError(message) {
+                const errorDiv = document.getElementById('loginError');
+                errorDiv.textContent = message;
+                errorDiv.style.display = 'block';
+                
+                setTimeout(() => {
+                    errorDiv.style.display = 'none';
+                }, 3000);
+            }
+
+            logActivity(type, action, details = {}) {
+                if (!this.settings.logActivities) return;
+                
+                const activity = {
+                    id: Date.now(),
+                    userId: this.currentUser ? this.currentUser.id : null,
+                    userName: this.currentUser ? this.currentUser.fullName : 'غير معروف',
+                    userRole: this.currentUser ? this.currentUser.role : 'unknown',
+                    type: type,
+                    action: action,
+                    details: details,
+                    timestamp: new Date().toISOString(),
+                    ip: '127.0.0.1',
+                    browser: navigator.userAgent,
+                    page: window.location.href
+                };
+                
+                this.activityLog.unshift(activity);
+                
+                if (this.activityLog.length > 1000) {
+                    this.activityLog = this.activityLog.slice(0, 1000);
+                }
+                
+                this.saveData('activityLog', this.activityLog);
+                
+                if (document.getElementById('activityPage').classList.contains('active')) {
+                    this.renderActivityLog();
+                    this.updateActivityStats();
+                }
+            }
+
+            addOnlineUser(user) {
+                const existingUser = this.onlineUsers.find(u => u.id === user.id);
+                
+                if (!existingUser) {
+                    const onlineUser = {
+                        id: user.id,
+                        name: user.fullName,
+                        role: user.role,
+                        loginTime: new Date().toISOString(),
+                        lastActivity: new Date().toISOString()
+                    };
+                    
+                    this.onlineUsers.push(onlineUser);
+                    this.saveData('onlineUsers', this.onlineUsers);
+                }
+            }
+
+            removeOnlineUser(userId) {
+                this.onlineUsers = this.onlineUsers.filter(u => u.id !== userId);
+                this.saveData('onlineUsers', this.onlineUsers);
+            }
+
+            updateOnlineUsers() {
+                const now = new Date();
+                
+                if (this.currentUser) {
+                    const userIndex = this.onlineUsers.findIndex(u => u.id === this.currentUser.id);
+                    if (userIndex !== -1) {
+                        this.onlineUsers[userIndex].lastActivity = now.toISOString();
+                    }
+                }
+                
+                const fiveMinutesAgo = new Date(now.getTime() - 5 * 60000);
+                this.onlineUsers = this.onlineUsers.filter(user => {
+                    return new Date(user.lastActivity) > fiveMinutesAgo;
+                });
+                
+                this.saveData('onlineUsers', this.onlineUsers);
+                
+                if (document.getElementById('activityPage').classList.contains('active')) {
+                    this.renderOnlineUsers();
+                    this.updateActivityStats();
+                }
+            }
+
+            switchPage(page) {
+                document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+                document.getElementById(page + 'Page').classList.add('active');
+                
+                const titles = {
+                    'dashboard': 'اللوحة الرئيسية',
+                    'activity': 'نشاط المستخدمين',
+                    'subscribers': 'إدارة المشتركين',
+                    'services': 'إدارة الخدمات',
+                    'financial': 'التقارير المالية',
+                    'users': 'إدارة المستخدمين',
+                    'settings': 'الإعدادات'
+                };
+                document.getElementById('pageTitle').textContent = titles[page];
+                
+                if (this.currentUser && page !== 'dashboard') {
+                    this.logActivity('page', `تصفح صفحة ${titles[page]}`, { page: page });
+                }
+                
+                switch(page) {
+                    case 'activity':
+                        this.renderActivityPage();
+                        break;
+                    case 'subscribers':
+                        this.renderSubscribers();
+                        break;
+                    case 'services':
+                        this.renderServices();
+                        break;
+                    case 'financial':
+                        this.renderFinancial();
+                        break;
+                    case 'users':
+                        this.renderUsers();
+                        break;
+                    case 'settings':
+                        this.renderSettings();
+                        break;
+                    default:
+                        this.renderDashboard();
+                }
+
+                document.querySelectorAll('.nav-item').forEach(item => {
+                    item.classList.remove('active');
+                    if (item.getAttribute('data-page') === page) {
+                        item.classList.add('active');
+                    }
+                });
+
+                if (window.innerWidth <= 768) {
+                    document.getElementById('sidebar').classList.remove('active');
+                }
+            }
+
+            generateDemoData() {
+                const names = ["أحمد علي", "محمد حسن", "سالم كريم", "علي محمود", "حسين عبدالله", "زيد عمر", "خالد سعيد", "عمر راشد"];
+                const services = ["برمجة مواقع", "تصميم جرافيك", "استضافة مواقع", "تطوير تطبيقات"];
+                const statuses = ['active', 'pending', 'inactive'];
+                
+                return names.map((name, index) => ({
+                    id: index + 1,
+                    name: name,
+                    service: services[Math.floor(Math.random() * services.length)],
+                    status: statuses[Math.floor(Math.random() * statuses.length)],
+                    price: Math.floor(Math.random() * 1000000) + 50000,
+                    progress: Math.floor(Math.random() * 100)
+                }));
+            }
+
+            renderDashboard() {
+                let html = '';
+                const demoData = this.generateDemoData();
+                
+                if (this.currentView === 'grid') {
+                    html = '<div class="grid-view">';
+                    demoData.forEach(item => {
+                        html += `
+                            <div class="card fade-in">
+                                <h4>${item.name}</h4>
+                                <p>${item.service}</p>
+                                <div style="display: flex; justify-content: space-between; margin-top: 15px;">
+                                    <span class="badge" style="
+                                        background: ${item.status === 'active' ? '#4CAF50' : 
+                                                    item.status === 'pending' ? '#FF9800' : '#f44336'};
+                                    ">
+                                        ${item.status === 'active' ? 'نشط' : 
+                                         item.status === 'pending' ? 'معلق' : 'متوقف'}
+                                    </span>
+                                    <span>${item.price.toLocaleString()} دينار</span>
+                                </div>
+                                <div class="progress-bar" style="margin-top: 10px;">
+                                    <div class="progress" style="width: ${item.progress}%"></div>
+                                </div>
+                            </div>
+                        `;
+                    });
+                    html += '</div>';
+                } else {
+                    html = `
+                        <div class="table-view">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>الاسم</th>
+                                        <th>الخدمة</th>
+                                        <th>الحالة</th>
+                                        <th>السعر</th>
+                                        <th>التقدم</th>
+                                        ${this.currentUser.role !== 'viewer' ? '<th>الإجراءات</th>' : ''}
+                                    </tr>
+                                </thead>
+                                <tbody>
+                    `;
+                    
+                    demoData.forEach((item, index) => {
+                        html += `
+                            <tr>
+                                <td>${index + 1}</td>
+                                <td>${item.name}</td>
+                                <td>${item.service}</td>
+                                <td>
+                                    <span class="badge" style="
+                                        background: ${item.status === 'active' ? '#4CAF50' : 
+                                                    item.status === 'pending' ? '#FF9800' : '#f44336'};
+                                    ">
+                                        ${item.status === 'active' ? 'نشط' : 
+                                         item.status === 'pending' ? 'معلق' : 'متوقف'}
+                                    </span>
+                                </td>
+                                <td>${item.price.toLocaleString()} دينار</td>
+                                <td>
+                                    <div style="display: flex; align-items: center; gap: 10px;">
+                                        <div style="flex: 1;">
+                                            <div class="progress-bar">
+                                                <div class="progress" style="width: ${item.progress}%"></div>
+                                            </div>
+                                        </div>
+                                        <span style="font-size: 12px; color: #666;">${item.progress}%</span>
+                                    </div>
+                                </td>
+                                ${this.currentUser.role !== 'viewer' ? `
+                                <td>
+                                    <div class="action-buttons">
+                                        <button class="action-btn edit" onclick="editItem(${item.id})">
+                                            تعديل
+                                        </button>
+                                        <button class="action-btn delete" onclick="deleteItem(${item.id})">
+                                            حذف
+                                        </button>
+                                    </div>
+                                </td>
+                                ` : ''}
+                            </tr>
+                        `;
+                    });
+                    
+                    html += `
+                                </tbody>
+                            </table>
+                        </div>
+                    `;
+                }
+                
+                document.getElementById('dynamicView').innerHTML = html;
+                this.updateStatistics();
+            }
+
+            updateStatistics() {
+                const demoData = this.generateDemoData();
+                
+                const total = demoData.length;
+                const active = demoData.filter(item => item.status === 'active').length;
+                const pending = demoData.filter(item => item.status === 'pending').length;
+                const revenue = demoData.reduce((sum, item) => sum + item.price, 0);
+                
+                document.getElementById('totalCount').textContent = total;
+                document.getElementById('activeCount').textContent = active;
+                document.getElementById('pendingCount').textContent = pending;
+                document.getElementById('revenueCount').textContent = revenue.toLocaleString() + ' دينار';
+                
+                setTimeout(() => {
+                    document.getElementById('totalProgress').style.width = '100%';
+                    document.getElementById('activeProgress').style.width = `${(active/total)*100}%`;
+                    document.getElementById('pendingProgress').style.width = `${(pending/total)*100}%`;
+                    document.getElementById('revenueProgress').style.width = `${(revenue/5000000)*100}%`;
+                }, 100);
+            }
+
+            renderActivityPage() {
+                this.renderOnlineUsers();
+                this.renderActivityLog();
+                this.updateActivityStats();
+            }
+
+            renderOnlineUsers() {
+                let html = '';
+                
+                if (this.onlineUsers.length > 0) {
+                    this.onlineUsers.forEach(user => {
+                        const loginTime = new Date(user.loginTime);
+                        const now = new Date();
+                        const diffMs = now - loginTime;
+                        const diffMins = Math.floor(diffMs / 60000);
+                        
+                        let durationText;
+                        if (diffMins < 1) {
+                            durationText = 'الآن';
+                        } else if (diffMins < 60) {
+                            durationText = `${diffMins} دقيقة`;
+                        } else {
+                            const hours = Math.floor(diffMins / 60);
+                            durationText = `${hours} ساعة`;
+                        }
+                        
+                        html += `
+                            <div class="online-user-badge">
+                                <span class="online-indicator"></span>
+                                <span>${user.name}</span>
+                                <span style="font-size: 11px; opacity: 0.8;">(${this.getRoleText(user.role)})</span>
+                                <span style="font-size: 10px; opacity: 0.6;">${durationText}</span>
+                            </div>
+                        `;
+                    });
+                } else {
+                    html = '<p style="color: #666; text-align: center;">لا يوجد مستخدمين متصلين حالياً</p>';
+                }
+                
+                document.getElementById('onlineUsersList').innerHTML = html;
+            }
+
+            renderActivityLog() {
+                let filteredActivities = this.activityLog;
+                
+                if (this.currentActivityFilter !== 'all') {
+                    filteredActivities = filteredActivities.filter(activity => 
+                        activity.type === this.currentActivityFilter
+                    );
+                }
+                
+                let html = '';
+                
+                if (filteredActivities.length > 0) {
+                    filteredActivities.forEach(activity => {
+                        const time = new Date(activity.timestamp);
+                        const now = new Date();
+                        const diffMs = now - time;
+                        const diffMins = Math.floor(diffMs / 60000);
+                        
+                        let timeText;
+                        if (diffMins < 1) {
+                            timeText = 'الآن';
+                        } else if (diffMins < 60) {
+                            timeText = `قبل ${diffMins} دقيقة`;
+                        } else if (diffMins < 1440) {
+                            const hours = Math.floor(diffMins / 60);
+                            timeText = `قبل ${hours} ساعة`;
+                        } else {
+                            const days = Math.floor(diffMins / 1440);
+                            timeText = `قبل ${days} يوم`;
+                        }
+                        
+                        let iconClass = '';
+                        let icon = '';
+                        switch(activity.type) {
+                            case 'login':
+                                iconClass = 'login';
+                                icon = '🔐';
+                                break;
+                            case 'logout':
+                                iconClass = 'logout';
+                                icon = '🚪';
+                                break;
+                            case 'add':
+                                iconClass = 'add';
+                                icon = '➕';
+                                break;
+                            case 'edit':
+                                iconClass = 'edit';
+                                icon = '✏️';
+                                break;
+                            case 'delete':
+                                iconClass = 'delete';
+                                icon = '🗑️';
+                                break;
+                            case 'page':
+                                iconClass = 'page';
+                                icon = '📄';
+                                break;
+                            default:
+                                iconClass = 'page';
+                                icon = '📝';
+                        }
+                        
+                        html += `
+                            <div class="activity-item fade-in">
+                                <div class="activity-icon ${iconClass}">
+                                    ${icon}
+                                </div>
+                                <div class="activity-details">
+                                    <div class="activity-user">${activity.userName}</div>
+                                    <div class="activity-action">${activity.action}</div>
+                                </div>
+                                <div class="activity-time">
+                                    ${timeText}<br>
+                                    <span style="font-size: 10px;">${time.toLocaleTimeString('ar-IQ')}</span>
+                                </div>
+                            </div>
+                        `;
+                    });
+                } else {
+                    html = `
+                        <div style="text-align: center; padding: 40px;">
+                            <div style="font-size: 48px; color: #ddd; margin-bottom: 15px;">📝</div>
+                            <h4 style="color: #666;">لا توجد نشاطات</h4>
+                            <p style="color: #999;">لم يتم تسجيل أي نشاطات بعد</p>
+                        </div>
+                    `;
+                }
+                
+                document.getElementById('activityLog').innerHTML = html;
+            }
+
+            updateActivityStats() {
+                const now = new Date();
+                const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+                const lastHour = new Date(now.getTime() - 60 * 60000);
+                
+                const todayActivities = this.activityLog.filter(activity => 
+                    new Date(activity.timestamp) >= today
+                ).length;
+                
+                const lastHourActivities = this.activityLog.filter(activity => 
+                    new Date(activity.timestamp) >= lastHour
+                ).length;
+                
+                document.getElementById('totalUsers').textContent = this.users.length;
+                document.getElementById('onlineUsers').textContent = this.onlineUsers.length;
+                document.getElementById('todayActivities').textContent = todayActivities;
+                document.getElementById('lastHourActivities').textContent = lastHourActivities;
+            }
+
+            filterActivity(filter) {
+                this.currentActivityFilter = filter;
+                document.querySelectorAll('.activity-filter-btn').forEach(btn => {
+                    btn.classList.remove('active');
+                });
+                document.querySelectorAll(`button[onclick="filterActivity('${filter}')"]`).forEach(btn => {
+                    btn.classList.add('active');
+                });
+                
+                this.renderActivityLog();
+            }
+
+            renderSubscribers() {
+                let html = '';
+                
+                if (this.currentView === 'grid') {
+                    html = '<div class="grid-view">';
+                    this.subscribers.forEach(subscriber => {
+                        html += `
+                            <div class="card fade-in">
+                                <h4>${subscriber.name}</h4>
+                                <p style="color: #666; margin: 5px 0;">${subscriber.phone}</p>
+                                <p style="color: #666; margin: 5px 0;">${subscriber.service}</p>
+                                <div style="display: flex; justify-content: space-between; margin-top: 15px;">
+                                    <span class="badge" style="
+                                        background: ${subscriber.status === 'active' ? '#4CAF50' : 
+                                                    subscriber.status === 'pending' ? '#FF9800' : '#f44336'};
+                                    ">
+                                        ${subscriber.status === 'active' ? 'نشط' : 
+                                         subscriber.status === 'pending' ? 'معلق' : 'متوقف'}
+                                    </span>
+                                    <span>${subscriber.price.toLocaleString()} دينار</span>
+                                </div>
+                                ${this.currentUser.role !== 'viewer' ? `
+                                <div class="action-buttons" style="margin-top: 15px;">
+                                    <button class="action-btn edit" onclick="editSubscriber(${subscriber.id})">
+                                        تعديل
+                                    </button>
+                                    <button class="action-btn delete" onclick="deleteSubscriber(${subscriber.id})">
+                                        حذف
+                                    </button>
+                                </div>
+                                ` : ''}
+                            </div>
+                        `;
+                    });
+                    html += '</div>';
+                } else {
+                    html = `
+                        <div class="table-view">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>الاسم</th>
+                                        <th>الهاتف</th>
+                                        <th>البريد</th>
+                                        <th>الخدمة</th>
+                                        <th>السعر</th>
+                                        <th>الحالة</th>
+                                        ${this.currentUser.role !== 'viewer' ? '<th>الإجراءات</th>' : ''}
+                                    </tr>
+                                </thead>
+                                <tbody>
+                    `;
+                    
+                    this.subscribers.forEach((subscriber, index) => {
+                        html += `
+                            <tr>
+                                <td>${index + 1}</td>
+                                <td>${subscriber.name}</td>
+                                <td>${subscriber.phone}</td>
+                                <td>${subscriber.email || '-'}</td>
+                                <td>${subscriber.service}</td>
+                                <td>${subscriber.price.toLocaleString()} دينار</td>
+                                <td>
+                                    <span class="badge" style="
+                                        background: ${subscriber.status === 'active' ? '#4CAF50' : 
+                                                    subscriber.status === 'pending' ? '#FF9800' : '#f44336'};
+                                    ">
+                                        ${subscriber.status === 'active' ? 'نشط' : 
+                                         subscriber.status === 'pending' ? 'معلق' : 'متوقف'}
+                                    </span>
+                                </td>
+                                ${this.currentUser.role !== 'viewer' ? `
+                                <td>
+                                    <div class="action-buttons">
+                                        <button class="action-btn edit" onclick="editSubscriber(${subscriber.id})">
+                                            تعديل
+                                        </button>
+                                        <button class="action-btn delete" onclick="deleteSubscriber(${subscriber.id})">
+                                            حذف
+                                        </button>
+                                    </div>
+                                </td>
+                                ` : ''}
+                            </tr>
+                        `;
+                    });
+                    
+                    html += `
+                                </tbody>
+                            </table>
+                        </div>
+                    `;
+                }
+                
+                if (this.subscribers.length === 0) {
+                    html = `
+                        <div style="text-align: center; padding: 50px;">
+                            <div style="font-size: 60px; color: #ddd; margin-bottom: 20px;">👥</div>
+                            <h3 style="color: #666; margin-bottom: 10px;">لا يوجد مشتركون</h3>
+                            <p style="color: #999;">قم بإضافة أول مشترك في النظام</p>
+                        </div>
+                    `;
+                }
+                
+                document.getElementById('subscribersView').innerHTML = html;
+            }
+
+            renderServices() {
+                let html = '<div class="grid-view">';
+                
+                this.services.forEach(service => {
+                    html += `
+                        <div class="card fade-in">
+                            <h4>${service.name}</h4>
+                            <p style="color: #666; margin: 10px 0;">الفئة: ${service.category}</p>
+                            <p style="color: #666; margin: 10px 0;">${service.description || ''}</p>
+                            <p style="color: var(--primary); font-weight: bold; font-size: 18px;">
+                                ${service.priceRange} دينار
+                            </p>
+                            ${this.currentUser.role !== 'viewer' ? `
+                            <div class="action-buttons" style="margin-top: 15px;">
+                                <button class="action-btn edit" onclick="editService(${service.id})">
+                                    تعديل
+                                </button>
+                                <button class="action-btn delete" onclick="deleteService(${service.id})">
+                                    حذف
+                                </button>
+                            </div>
+                            ` : ''}
+                        </div>
+                    `;
+                });
+                
+                html += '</div>';
+                document.getElementById('servicesView').innerHTML = html;
+            }
+
+            renderUsers() {
+                if (this.currentUser.role !== 'admin') {
+                    document.getElementById('usersView').innerHTML = `
+                        <div style="text-align: center; padding: 50px;">
+                            <div style="font-size: 60px; color: #ddd; margin-bottom: 20px;">🚫</div>
+                            <h3 style="color: #666; margin-bottom: 10px;">غير مصرح</h3>
+                            <p style="color: #999;">لا تملك صلاحية الوصول إلى هذه الصفحة</p>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                let html = '<div class="users-grid">';
+                
+                this.users.forEach(user => {
+                    const roleClass = `role-${user.role}`;
+                    html += `
+                        <div class="user-card fade-in">
+                            <h4>${user.fullName}</h4>
+                            <p style="color: #666; margin: 5px 0;">اسم المستخدم: ${user.username}</p>
+                            <p style="color: #666; margin: 5px 0;">البريد: ${user.email || '-'}</p>
+                            <span class="user-role ${roleClass}">${this.getRoleText(user.role)}</span>
+                            <div class="action-buttons" style="margin-top: 15px;">
+                                <button class="action-btn edit" onclick="editUser(${user.id})">
+                                    تعديل
+                                </button>
+                                ${user.id !== this.currentUser.id ? `
+                                <button class="action-btn delete" onclick="deleteUser(${user.id})">
+                                    حذف
+                                </button>
+                                ` : ''}
+                            </div>
+                        </div>
+                    `;
+                });
+                
+                html += '</div>';
+                document.getElementById('usersView').innerHTML = html;
+            }
+
+            renderFinancial() {
+                const months = ['يناير', 'فبراير', 'مارس', 'أبريل', 'مايو', 'يونيو'];
+                const revenueData = months.map(month => ({
+                    month,
+                    revenue: Math.floor(Math.random() * 5000000) + 1000000,
+                    expenses: Math.floor(Math.random() * 2000000) + 500000,
+                    profit: 0
+                }));
+                
+                revenueData.forEach(item => {
+                    item.profit = item.revenue - item.expenses;
+                });
+                
+                const totalRevenue = revenueData.reduce((sum, item) => sum + item.revenue, 0);
+                const totalExpenses = revenueData.reduce((sum, item) => sum + item.expenses, 0);
+                const totalProfit = totalRevenue - totalExpenses;
+                
+                let html = `
+                    <div class="stats-grid">
+                        <div class="stat-card revenue">
+                            <div style="font-size: 24px; color: var(--success); margin-bottom: 10px;">💰</div>
+                            <div class="stat-value">${totalRevenue.toLocaleString()} دينار</div>
+                            <div class="stat-label">إجمالي الإيرادات</div>
+                        </div>
+                        
+                        <div class="stat-card pending">
+                            <div style="font-size: 24px; color: var(--warning); margin-bottom: 10px;">💸</div>
+                            <div class="stat-value">${totalExpenses.toLocaleString()} دينار</div>
+                            <div class="stat-label">إجمالي المصروفات</div>
+                        </div>
+                        
+                        <div class="stat-card active">
+                            <div style="font-size: 24px; color: var(--secondary); margin-bottom: 10px;">📈</div>
+                            <div class="stat-value">${totalProfit.toLocaleString()} دينار</div>
+                            <div class="stat-label">صافي الربح</div>
+                        </div>
+                    </div>
+                    
+                    <div class="table-view" style="margin-top: 30px;">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>الشهر</th>
+                                    <th>الإيرادات</th>
+                                    <th>المصروفات</th>
+                                    <th>الربح</th>
+                                    <th>نسبة الربح</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                `;
+                
+                revenueData.forEach(item => {
+                    const profitPercentage = ((item.profit / item.revenue) * 100).toFixed(1);
+                    html += `
+                        <tr>
+                            <td>${item.month}</td>
+                            <td>${item.revenue.toLocaleString()} دينار</td>
+                            <td>${item.expenses.toLocaleString()} دينار</td>
+                            <td style="color: ${item.profit >= 0 ? 'var(--success)' : 'var(--danger)'};">
+                                ${item.profit.toLocaleString()} دينار
+                            </td>
+                            <td>
+                                <span class="badge" style="
+                                    background: ${item.profit >= 0 ? '#4CAF50' : '#f44336'};
+                                ">
+                                    ${profitPercentage}%
+                                </span>
+                            </td>
+                        </tr>
+                    `;
+                });
+                
+                html += `
+                            </tbody>
+                        </table>
+                    </div>
+                `;
+                
+                document.getElementById('financialView').innerHTML = html;
+            }
+
+            renderSettings() {
+                document.getElementById('autoRefresh').checked = this.settings.autoRefresh;
+                document.getElementById('notifications').checked = this.settings.notifications;
+                document.getElementById('logActivities').checked = this.settings.logActivities;
+            }
+
+            openAddModal(subscriber = null) {
+                if (this.currentUser.role === 'viewer') {
+                    this.showMessage('لا تملك صلاحية إضافة مشتركين', 'error');
+                    return;
+                }
+                
+                this.editingId = subscriber ? subscriber.id : null;
+                
+                if (subscriber) {
+                    document.getElementById('modalTitle').textContent = 'تعديل مشترك';
+                    document.getElementById('nameInput').value = subscriber.name;
+                    document.getElementById('phoneInput').value = subscriber.phone;
+                    document.getElementById('emailInput').value = subscriber.email || '';
+                    document.getElementById('priceInput').value = subscriber.price;
+                    document.getElementById('notesInput').value = subscriber.notes || '';
+                    document.getElementById('statusInput').value = subscriber.status;
+                } else {
+                    document.getElementById('modalTitle').textContent = 'إضافة مشترك جديد';
+                    document.getElementById('nameInput').value = '';
+                    document.getElementById('phoneInput').value = '';
+                    document.getElementById('emailInput').value = '';
+                    document.getElementById('priceInput').value = '';
+                    document.getElementById('notesInput').value = '';
+                    document.getElementById('statusInput').value = 'active';
+                }
+                
+                const serviceSelect = document.getElementById('serviceInput');
+                serviceSelect.innerHTML = '<option value="">اختر الخدمة</option>';
+                this.services.forEach(service => {
+                    const option = document.createElement('option');
+                    option.value = service.name;
+                    option.textContent = service.name;
+                    if (subscriber && subscriber.service === service.name) {
+                        option.selected = true;
+                    }
+                    serviceSelect.appendChild(option);
+                });
+                
+                const governorates = [
+                    'بغداد', 'البصرة', 'نينوى', 'أربيل', 'السليمانية', 'ذي قار',
+                    'المثنى', 'القادسية', 'بابل', 'كربلاء', 'النجف', 'الأنبار',
+                    'ديالى', 'واسط', 'صلاح الدين', 'كركوك', 'دهوك'
+                ];
+                
+                const governorateSelect = document.getElementById('governorateInput');
+                governorateSelect.innerHTML = '<option value="">اختر المحافظة</option>';
+                governorates.forEach(gov => {
+                    const option = document.createElement('option');
+                    option.value = gov;
+                    option.textContent = gov;
+                    if (subscriber && subscriber.governorate === gov) {
+                        option.selected = true;
+                    }
+                    governorateSelect.appendChild(option);
+                });
+                
+                document.getElementById('addModal').style.display = 'flex';
+            }
+
+            saveSubscriber() {
+                const subscriber = {
+                    id: this.editingId || Date.now(),
+                    name: document.getElementById('nameInput').value,
+                    phone: document.getElementById('phoneInput').value,
+                    email: document.getElementById('emailInput').value,
+                    service: document.getElementById('serviceInput').value,
+                    price: parseInt(document.getElementById('priceInput').value),
+                    governorate: document.getElementById('governorateInput').value,
+                    status: document.getElementById('statusInput').value,
+                    notes: document.getElementById('notesInput').value,
+                    date: new Date().toLocaleDateString('ar-IQ'),
+                    createdBy: this.currentUser.id
+                };
+                
+                const actionType = this.editingId ? 'edit' : 'add';
+                const actionText = this.editingId ? 'تعديل' : 'إضافة';
+                
+                if (this.editingId) {
+                    const index = this.subscribers.findIndex(s => s.id === this.editingId);
+                    if (index !== -1) {
+                        subscriber.createdBy = this.subscribers[index].createdBy;
+                        this.subscribers[index] = subscriber;
+                    }
+                } else {
+                    this.subscribers.push(subscriber);
+                }
+                
+                this.saveData('subscribers', this.subscribers);
+                
+                this.logActivity(actionType, 
+                    `${this.currentUser.fullName} قام ب${actionText} مشترك جديد: ${subscriber.name}`,
+                    { subscriberId: subscriber.id, name: subscriber.name, price: subscriber.price }
+                );
+                
+                this.closeModal();
+                this.renderSubscribers();
+                this.updateStatistics();
+                this.showMessage(
+                    this.editingId ? 'تم تحديث المشترك بنجاح' : 'تم إضافة المشترك بنجاح',
+                    'success'
+                );
+            }
+
+            editSubscriber(id) {
+                if (this.currentUser.role === 'viewer') {
+                    this.showMessage('لا تملك صلاحية التعديل', 'error');
+                    return;
+                }
+                
+                const subscriber = this.subscribers.find(s => s.id === id);
+                if (subscriber) {
+                    this.openAddModal(subscriber);
+                }
+            }
+
+            deleteSubscriber(id) {
+                if (this.currentUser.role === 'viewer') {
+                    this.showMessage('لا تملك صلاحية الحذف', 'error');
+                    return;
+                }
+                
+                const subscriber = this.subscribers.find(s => s.id === id);
+                
+                if (subscriber && confirm('هل أنت متأكد من حذف هذا المشترك؟')) {
+                    this.subscribers = this.subscribers.filter(s => s.id !== id);
+                    this.saveData('subscribers', this.subscribers);
+                    
+                    this.logActivity('delete',
+                        `${this.currentUser.fullName} قام بحذف مشترك: ${subscriber.name}`,
+                        { subscriberId: id, name: subscriber.name }
+                    );
+                    
+                    this.renderSubscribers();
+                    this.updateStatistics();
+                    this.showMessage('تم حذف المشترك بنجاح', 'success');
+                }
+            }
+
+            editItem(id) {
+                if (this.currentUser.role === 'viewer') {
+                    this.showMessage('لا تملك صلاحية التعديل', 'error');
+                    return;
+                }
+                
+                const item = this.generateDemoData().find(item => item.id === id);
+                if (item) {
+                    this.showMessage(`تعديل العنصر: ${item.name}`, 'info');
+                }
+            }
+
+            deleteItem(id) {
+                if (this.currentUser.role === 'viewer') {
+                    this.showMessage('لا تملك صلاحية الحذف', 'error');
+                    return;
+                }
+                
+                const item = this.generateDemoData().find(item => item.id === id);
+                if (item && confirm('هل أنت متأكد من حذف هذا العنصر؟')) {
+                    this.showMessage(`تم حذف العنصر: ${item.name}`, 'success');
+                }
+            }
+
+            editService(id) {
+                if (this.currentUser.role === 'viewer') {
+                    this.showMessage('لا تملك صلاحية التعديل', 'error');
+                    return;
+                }
+                
+                const service = this.services.find(s => s.id === id);
+                if (service) {
+                    this.openServiceModal(service);
+                }
+            }
+
+            deleteService(id) {
+                if (this.currentUser.role === 'viewer') {
+                    this.showMessage('لا تملك صلاحية الحذف', 'error');
+                    return;
+                }
+                
+                const service = this.services.find(s => s.id === id);
+                if (service && confirm('هل أنت متأكد من حذف هذه الخدمة؟')) {
+                    this.services = this.services.filter(s => s.id !== id);
+                    this.saveData('services', this.services);
+                    
+                    this.logActivity('delete',
+                        `${this.currentUser.fullName} قام بحذف خدمة: ${service.name}`,
+                        { serviceId: id, name: service.name }
+                    );
+                    
+                    this.renderServices();
+                    this.showMessage('تم حذف الخدمة بنجاح', 'success');
+                }
+            }
+
+            openServiceModal(service = null) {
+                if (this.currentUser.role === 'viewer') {
+                    this.showMessage('لا تملك صلاحية إضافة خدمات', 'error');
+                    return;
+                }
+                
+                this.editingId = service ? service.id : null;
+                
+                if (service) {
+                    document.getElementById('serviceModalTitle').textContent = 'تعديل خدمة';
+                    document.getElementById('serviceNameInput').value = service.name;
+                    document.getElementById('serviceCategoryInput').value = service.category;
+                    
+                    if (service.priceRange) {
+                        const prices = service.priceRange.split(' - ');
+                        if (prices.length === 2) {
+                            document.getElementById('serviceMinPrice').value = prices[0].replace(/[^0-9]/g, '');
+                            document.getElementById('serviceMaxPrice').value = prices[1].replace(/[^0-9]/g, '');
+                        }
+                    }
+                    
+                    document.getElementById('serviceDescription').value = service.description || '';
+                } else {
+                    document.getElementById('serviceModalTitle').textContent = 'إضافة خدمة جديدة';
+                    document.getElementById('serviceNameInput').value = '';
+                    document.getElementById('serviceCategoryInput').value = '';
+                    document.getElementById('serviceMinPrice').value = '';
+                    document.getElementById('serviceMaxPrice').value = '';
+                    document.getElementById('serviceDescription').value = '';
+                }
+                
+                document.getElementById('serviceModal').style.display = 'flex';
+            }
+
+            saveService() {
+                const service = {
+                    id: this.editingId || Date.now(),
+                    name: document.getElementById('serviceNameInput').value,
+                    category: document.getElementById('serviceCategoryInput').value,
+                    priceRange: `${document.getElementById('serviceMinPrice').value} - ${document.getElementById('serviceMaxPrice').value}`,
+                    description: document.getElementById('serviceDescription').value
+                };
+                
+                const actionType = this.editingId ? 'edit' : 'add';
+                const actionText = this.editingId ? 'تعديل' : 'إضافة';
+                
+                if (this.editingId) {
+                    const index = this.services.findIndex(s => s.id === this.editingId);
+                    if (index !== -1) {
+                        this.services[index] = service;
+                    }
+                } else {
+                    this.services.push(service);
+                }
+                
+                this.saveData('services', this.services);
+                
+                this.logActivity(actionType,
+                    `${this.currentUser.fullName} قام ب${actionText} خدمة جديدة: ${service.name}`,
+                    { serviceId: service.id, name: service.name }
+                );
+                
+                this.closeServiceModal();
+                this.renderServices();
+                this.showMessage(
+                    this.editingId ? 'تم تحديث الخدمة بنجاح' : 'تم إضافة الخدمة بنجاح',
+                    'success'
+                );
+            }
+
+            closeServiceModal() {
+                document.getElementById('serviceModal').style.display = 'none';
+                this.editingId = null;
+            }
+
+            openUserModal(user = null) {
+                if (this.currentUser.role !== 'admin') {
+                    this.showMessage('لا تملك صلاحية إدارة المستخدمين', 'error');
+                    return;
+                }
+                
+                this.editingId = user ? user.id : null;
+                
+                if (user) {
+                    document.getElementById('userModalTitle').textContent = 'تعديل مستخدم';
+                    document.getElementById('userNameInput').value = user.username;
+                    document.getElementById('userPasswordInput').value = '';
+                    document.getElementById('userFullNameInput').value = user.fullName;
+                    document.getElementById('userRoleInput').value = user.role;
+                    document.getElementById('userEmailInput').value = user.email || '';
+                } else {
+                    document.getElementById('userModalTitle').textContent = 'إضافة مستخدم جديد';
+                    document.getElementById('userNameInput').value = '';
+                    document.getElementById('userPasswordInput').value = '';
+                    document.getElementById('userFullNameInput').value = '';
+                    document.getElementById('userRoleInput').value = 'editor';
+                    document.getElementById('userEmailInput').value = '';
+                }
+                
+                document.getElementById('userModal').style.display = 'flex';
+            }
+
+            saveUser() {
+                const user = {
+                    id: this.editingId || Date.now(),
+                    username: document.getElementById('userNameInput').value,
+                    password: document.getElementById('userPasswordInput').value || 'password123',
+                    fullName: document.getElementById('userFullNameInput').value,
+                    role: document.getElementById('userRoleInput').value,
+                    email: document.getElementById('userEmailInput').value,
+                    created: new Date().toISOString()
+                };
+                
+                if (!this.editingId) {
+                    const exists = this.users.some(u => u.username === user.username);
+                    if (exists) {
+                        this.showMessage('اسم المستخدم موجود بالفعل', 'error');
+                        return;
+                    }
+                }
+                
+                if (this.editingId) {
+                    const index = this.users.findIndex(u => u.id === this.editingId);
+                    if (index !== -1) {
+                        if (!user.password) {
+                            user.password = this.users[index].password;
+                        }
+                        this.users[index] = user;
+                        
+                        if (user.id === this.currentUser.id) {
+                            this.currentUser = user;
+                            localStorage.setItem('currentUser', JSON.stringify(user));
+                            document.getElementById('currentUser').textContent = user.fullName;
+                            document.getElementById('currentRole').textContent = this.getRoleText(user.role);
+                            this.checkPermissions();
+                        }
+                    }
+                } else {
+                    this.users.push(user);
+                }
+                
+                this.saveData('users', this.users);
+                
+                this.closeUserModal();
+                this.renderUsers();
+                this.showMessage(
+                    this.editingId ? 'تم تحديث المستخدم بنجاح' : 'تم إضافة المستخدم بنجاح',
+                    'success'
+                );
+            }
+
+            editUser(id) {
+                if (this.currentUser.role !== 'admin') {
+                    this.showMessage('لا تملك صلاحية التعديل', 'error');
+                    return;
+                }
+                
+                const user = this.users.find(u => u.id === id);
+                if (user) {
+                    this.openUserModal(user);
+                }
+            }
+
+            deleteUser(id) {
+                if (this.currentUser.role !== 'admin') {
+                    this.showMessage('لا تملك صلاحية الحذف', 'error');
+                    return;
+                }
+                
+                if (id === this.currentUser.id) {
+                    this.showMessage('لا يمكن حذف حسابك الخاص', 'error');
+                    return;
+                }
+                
+                const user = this.users.find(u => u.id === id);
+                if (user && confirm('هل أنت متأكد من حذف هذا المستخدم؟')) {
+                    this.users = this.users.filter(u => u.id !== id);
+                    this.saveData('users', this.users);
+                    
+                    this.logActivity('delete',
+                        `${this.currentUser.fullName} قام بحذف مستخدم: ${user.fullName}`,
+                        { userId: id, name: user.fullName }
+                    );
+                    
+                    this.renderUsers();
+                    this.showMessage('تم حذف المستخدم بنجاح', 'success');
+                }
+            }
+
+            closeModal() {
+                document.getElementById('addModal').style.display = 'none';
+                this.editingId = null;
+            }
+
+            closeUserModal() {
+                document.getElementById('userModal').style.display = 'none';
+                this.editingId = null;
+            }
+
+            setViewMode(mode) {
+                this.currentView = mode;
+                document.querySelectorAll('.control-btn').forEach(btn => {
+                    btn.classList.remove('active');
+                });
+                document.querySelectorAll(`button[onclick="setViewMode('${mode}')"]`).forEach(btn => {
+                    btn.classList.add('active');
+                });
+                
+                this.renderAll();
+            }
+
+            performSearch(query) {
+                if (query.length > 0) {
+                    this.showMessage(`جاري البحث عن: ${query}`, 'info');
+                }
+            }
+
+            filterData(filter) {
+                this.currentFilter = filter;
+                document.querySelectorAll('.filter-btn').forEach(btn => {
+                    btn.classList.remove('active');
+                });
+                document.querySelectorAll(`button[onclick="filterData('${filter}')"]`).forEach(btn => {
+                    btn.classList.add('active');
+                });
+                
+                this.showMessage(`تم تطبيق الفلتر: ${filter}`, 'info');
+            }
+
+            updateDate() {
+                const now = new Date();
+                const options = { 
+                    weekday: 'long', 
+                    year: 'numeric', 
+                    month: 'long', 
+                    day: 'numeric' 
+                };
+                document.getElementById('currentDate').textContent = 
+                    now.toLocaleDateString('ar-IQ', options);
+            }
+
+            updateOnlineStatus() {
+                const isOnline = navigator.onLine;
+                const statusElement = document.getElementById('onlineStatus');
+                
+                if (isOnline) {
+                    statusElement.innerHTML = `
+                        <span style="width: 10px; height: 10px; background: var(--success); border-radius: 50%;"></span>
+                        <span>متصل</span>
+                    `;
+                    statusElement.style.color = 'var(--success)';
+                } else {
+                    statusElement.innerHTML = `
+                        <span style="width: 10px; height: 10px; background: var(--danger); border-radius: 50%;"></span>
+                        <span>غير متصل</span>
+                    `;
+                    statusElement.style.color = 'var(--danger)';
+                }
+            }
+
+            changeTheme(theme) {
+                this.currentTheme = theme;
+                this.applyTheme();
+                this.showMessage(`تم تغيير الثيم إلى ${theme}`, 'success');
+                
+                this.settings.theme = theme;
+                this.saveData('settings', this.settings);
+            }
+
+            applyTheme() {
+                const themes = {
+                    blue: { primary: '#1a2980', secondary: '#26d0ce' },
+                    green: { primary: '#2E7D32', secondary: '#4CAF50' },
+                    purple: { primary: '#6A1B9A', secondary: '#9C27B0' },
+                    dark: { primary: '#212121', secondary: '#424242' }
+                };
+                
+                const theme = themes[this.currentTheme];
+                document.documentElement.style.setProperty('--primary', theme.primary);
+                document.documentElement.style.setProperty('--secondary', theme.secondary);
+            }
+
+            saveSetting(key, value) {
+                this.settings[key] = value;
+                this.saveData('settings', this.settings);
+                this.showMessage('تم حفظ الإعدادات', 'success');
+            }
+
+            backupData() {
+                const data = {
+                    users: this.users,
+                    subscribers: this.subscribers,
+                    services: this.services,
+                    settings: this.settings,
+                    financial: this.financialData,
+                    activityLog: this.activityLog
+                };
+                
+                const dataStr = JSON.stringify(data, null, 2);
+                const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
+                
+                const exportFileDefaultName = `عراق-ستار-نسخة-احتياطية-${new Date().toISOString().split('T')[0]}.json`;
+                
+                const linkElement = document.createElement('a');
+                linkElement.setAttribute('href', dataUri);
+                linkElement.setAttribute('download', exportFileDefaultName);
+                linkElement.click();
+                
+                this.showMessage('تم إنشاء النسخة الاحتياطية', 'success');
+            }
+
+            restoreData() {
+                const input = document.createElement('input');
+                input.type = 'file';
+                input.accept = '.json';
+                
+                input.onchange = e => {
+                    const file = e.target.files[0];
+                    const reader = new FileReader();
+                    
+                    reader.onload = event => {
+                        try {
+                            const data = JSON.parse(event.target.result);
+                            
+                            if (confirm('هل تريد استعادة النسخة الاحتياطية؟ سيتم فقدان البيانات الحالية.')) {
+                                this.users = data.users || this.getDefaultUsers();
+                                this.subscribers = data.subscribers || [];
+                                this.services = data.services || this.getDefaultServices();
+                                this.settings = data.settings || this.getDefaultSettings();
+                                this.financialData = data.financial || [];
+                                this.activityLog = data.activityLog || [];
+                                this.onlineUsers = [];
+                                
+                                this.saveData('users', this.users);
+                                this.saveData('subscribers', this.subscribers);
+                                this.saveData('services', this.services);
+                                this.saveData('settings', this.settings);
+                                this.saveData('financial', this.financialData);
+                                this.saveData('activityLog', this.activityLog);
+                                this.saveData('onlineUsers', this.onlineUsers);
+                                
+                                this.showMessage('تم استعادة النسخة الاحتياطية بنجاح', 'success');
+                                setTimeout(() => {
+                                    location.reload();
+                                }, 2000);
+                            }
+                        } catch (error) {
+                            this.showMessage('خطأ في قراءة الملف', 'error');
+                        }
+                    };
+                    
+                    reader.readAsText(file);
+                };
+                
+                input.click();
+            }
+
+            exportActivityLog() {
+                if (this.currentUser.role !== 'admin') {
+                    this.showMessage('لا تملك صلاحية التصدير', 'error');
+                    return;
+                }
+                
+                const data = {
+                    exportDate: new Date().toISOString(),
+                    totalActivities: this.activityLog.length,
+                    activities: this.activityLog
+                };
+                
+                const dataStr = JSON.stringify(data, null, 2);
+                const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
+                
+                const exportFileDefaultName = `سجل-النشاطات-${new Date().toISOString().split('T')[0]}.json`;
+                
+                const linkElement = document.createElement('a');
+                linkElement.setAttribute('href', dataUri);
+                linkElement.setAttribute('download', exportFileDefaultName);
+                linkElement.click();
+                
+                this.showMessage('تم تصدير سجل النشاطات', 'success');
+            }
+
+            clearOldActivities() {
+                if (this.currentUser.role !== 'admin') {
+                    this.showMessage('لا تملك صلاحية المسح', 'error');
+                    return;
+                }
+                
+                if (confirm('هل تريد مسح جميع النشاطات القديمة؟ سيتم الاحتفاظ فقط بنشاطات آخر 30 يوم.')) {
+                    const thirtyDaysAgo = new Date();
+                    thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+                    
+                    this.activityLog = this.activityLog.filter(activity => 
+                        new Date(activity.timestamp) >= thirtyDaysAgo
+                    );
+                    
+                    this.saveData('activityLog', this.activityLog);
+                    this.renderActivityLog();
+                    this.updateActivityStats();
+                    this.showMessage('تم مسح النشاطات القديمة', 'success');
+                }
+            }
+
+            renderAll() {
+                if (!this.currentUser) return;
+                
+                this.updateDate();
+                this.updateOnlineStatus();
+                this.updateStatistics();
+                this.updateLoginTimeDisplay();
+                
+                const currentPage = document.querySelector('.page.active').id.replace('Page', '');
+                switch(currentPage) {
+                    case 'dashboard':
+                        this.renderDashboard();
+                        break;
+                    case 'activity':
+                        this.renderActivityPage();
+                        break;
+                    case 'subscribers':
+                        this.renderSubscribers();
+                        break;
+                    case 'services':
+                        this.renderServices();
+                        break;
+                    case 'financial':
+                        this.renderFinancial();
+                        break;
+                    case 'users':
+                        this.renderUsers();
+                        break;
+                    case 'settings':
+                        this.renderSettings();
+                        break;
+                }
+            }
+
+            showMessage(message, type = 'info') {
+                const messageDiv = document.createElement('div');
+                messageDiv.innerHTML = `
+                    <div style="
+                        position: fixed;
+                        top: 20px;
+                        left: 20px;
+                        background: ${type === 'success' ? '#4CAF50' : 
+                                    type === 'error' ? '#f44336' : 
+                                    type === 'warning' ? '#FF9800' : '#2196F3'};
+                        color: white;
+                        padding: 15px 20px;
+                        border-radius: 8px;
+                        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+                        z-index: 10000;
+                        animation: slideIn 0.3s ease-out;
+                    ">
+                        ${message}
+                    </div>
+                `;
+                
+                document.body.appendChild(messageDiv);
+                
+                setTimeout(() => {
+                    messageDiv.remove();
+                }, 3000);
+                
+                const style = document.createElement('style');
+                style.textContent = `
+                    @keyframes slideIn {
+                        from { transform: translateX(-100%); opacity: 0; }
+                        to { transform: translateX(0); opacity: 1; }
+                    }
+                `;
+                document.head.appendChild(style);
+            }
+
+            exportAllData() {
+                if (this.currentUser.role !== 'admin') {
+                    this.showMessage('لا تملك صلاحية التصدير', 'error');
+                    return;
+                }
+                
+                this.backupData();
+            }
+
+            refreshData() {
+                this.renderAll();
+                this.showMessage('تم تحديث البيانات بنجاح', 'success');
+            }
+        }
+
+        const dynamicManager = new DynamicManager();
+
+        // دوال عامة للاستدعاء من HTML
+        function setViewMode(mode) {
+            dynamicManager.setViewMode(mode);
+        }
+
+        function filterData(filter) {
+            dynamicManager.filterData(filter);
+        }
+
+        function refreshData() {
+            dynamicManager.refreshData();
+        }
+
+        function exportAllData() {
+            dynamicManager.exportAllData();
+        }
+
+        function openAddModal() {
+            dynamicManager.openAddModal();
+        }
+
+        function closeModal() {
+            dynamicManager.closeModal();
+        }
+
+        function changeTheme(theme) {
+            dynamicManager.changeTheme(theme);
+        }
+
+        function openServiceModal() {
+            dynamicManager.openServiceModal();
+        }
+
+        function closeServiceModal() {
+            dynamicManager.closeServiceModal();
+        }
+
+        function openUserModal() {
+            dynamicManager.openUserModal();
+        }
+
+        function closeUserModal() {
+            dynamicManager.closeUserModal();
+        }
+
+        function saveSetting(key, value) {
+            dynamicManager.saveSetting(key, value);
+        }
+
+        function backupData() {
+            dynamicManager.backupData();
+        }
+
+        function restoreData() {
+            dynamicManager.restoreData();
+        }
+
+        function performSearch(query) {
+            dynamicManager.performSearch(query);
+        }
+
+        // دوال الإجراءات
+        function filterActivity(filter) {
+            dynamicManager.filterActivity(filter);
+        }
+
+        function exportActivityLog() {
+            dynamicManager.exportActivityLog();
+        }
+
+        function clearOldActivities() {
+            dynamicManager.clearOldActivities();
+        }
+
+        function editItem(id) {
+            dynamicManager.editItem(id);
+        }
+
+        function deleteItem(id) {
+            dynamicManager.deleteItem(id);
+        }
+
+        function editSubscriber(id) {
+            dynamicManager.editSubscriber(id);
+        }
+
+        function deleteSubscriber(id) {
+            dynamicManager.deleteSubscriber(id);
+        }
+
+        function editService(id) {
+            dynamicManager.editService(id);
+        }
+
+        function deleteService(id) {
+            dynamicManager.deleteService(id);
+        }
+
+        function editUser(id) {
+            dynamicManager.editUser(id);
+        }
+
+        function deleteUser(id) {
+            dynamicManager.deleteUser(id);
+        }
+    </script>
+</body>
+</html>
