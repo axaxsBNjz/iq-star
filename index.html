@@ -2,7 +2,9 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
     <title>عراق ستار - نظام الإدارة الديناميكي</title>
     <style>
         :root {
@@ -20,12 +22,14 @@
             padding: 0;
             box-sizing: border-box;
             font-family: 'Segoe UI', 'Arial', sans-serif;
+            -webkit-tap-highlight-color: transparent;
         }
 
         body {
             background: linear-gradient(135deg, var(--primary), var(--secondary));
             min-height: 100vh;
             transition: all 0.3s ease;
+            overflow-x: hidden;
         }
 
         .login-page {
@@ -39,6 +43,7 @@
             align-items: center;
             padding: 20px;
             transition: all 0.5s ease;
+            overflow-y: auto;
         }
 
         .login-container {
@@ -75,6 +80,7 @@
             font-size: 40px;
             color: var(--primary);
             font-weight: bold;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
         }
 
         .login-body {
@@ -99,6 +105,8 @@
             border-radius: 8px;
             font-size: 16px;
             transition: all 0.3s;
+            -webkit-appearance: none;
+            appearance: none;
         }
 
         input:focus, select:focus, textarea:focus {
@@ -114,6 +122,7 @@
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s;
+            touch-action: manipulation;
         }
 
         .btn-primary {
@@ -196,6 +205,7 @@
             display: flex;
             align-items: center;
             gap: 12px;
+            touch-action: manipulation;
         }
 
         .nav-item:hover {
@@ -237,6 +247,7 @@
             align-items: center;
             justify-content: center;
             gap: 8px;
+            touch-action: manipulation;
         }
 
         .logout-btn:hover {
@@ -298,6 +309,7 @@
             cursor: pointer;
             font-weight: 600;
             transition: all 0.3s;
+            touch-action: manipulation;
         }
 
         .control-btn.active {
@@ -331,6 +343,7 @@
             width: 100%;
             overflow-x: auto;
             margin-top: 20px;
+            -webkit-overflow-scrolling: touch;
         }
 
         .table-view table {
@@ -367,6 +380,7 @@
             font-size: 14px;
             font-weight: 600;
             transition: all 0.3s;
+            touch-action: manipulation;
         }
 
         .action-btn.edit {
@@ -396,6 +410,7 @@
             justify-content: center;
             align-items: center;
             padding: 20px;
+            overflow-y: auto;
         }
 
         .modal-content {
@@ -406,6 +421,7 @@
             overflow: hidden;
             max-height: 90vh;
             overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
         }
 
         .modal-header {
@@ -449,6 +465,7 @@
             cursor: pointer;
             font-weight: 600;
             transition: all 0.3s;
+            touch-action: manipulation;
         }
 
         .filter-btn.active {
@@ -477,6 +494,7 @@
             border-radius: 8px;
             border: 2px solid #ddd;
             cursor: pointer;
+            touch-action: manipulation;
         }
 
         .theme-btn.blue {
@@ -558,6 +576,7 @@
             cursor: pointer;
             font-size: 14px;
             transition: all 0.3s;
+            touch-action: manipulation;
         }
 
         .activity-filter-btn.active {
@@ -573,6 +592,7 @@
             border: 1px solid #eee;
             border-radius: 8px;
             padding: 10px;
+            -webkit-overflow-scrolling: touch;
         }
 
         .activity-item {
@@ -657,6 +677,7 @@
         @media (max-width: 768px) {
             .sidebar {
                 transform: translateX(100%);
+                width: 100%;
             }
             
             .sidebar.active {
@@ -665,6 +686,7 @@
             
             .main-content {
                 margin-right: 0;
+                padding: 15px;
             }
             
             .menu-toggle {
@@ -677,6 +699,7 @@
             
             .control-buttons {
                 flex-direction: column;
+                width: 100%;
             }
             
             .control-btn {
@@ -693,6 +716,87 @@
                 text-align: right;
                 width: 100%;
             }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .top-bar {
+                padding: 12px 15px;
+                flex-wrap: wrap;
+                gap: 10px;
+            }
+            
+            .control-panel {
+                padding: 15px;
+            }
+            
+            .modal-content {
+                width: 95%;
+                max-height: 85vh;
+            }
+            
+            .modal-body {
+                padding: 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .login-container {
+                max-width: 90%;
+                margin: 10px;
+                border-radius: 15px;
+            }
+            
+            .login-header {
+                padding: 20px;
+            }
+            
+            .login-logo {
+                width: 60px;
+                height: 60px;
+                font-size: 30px;
+            }
+            
+            .login-body {
+                padding: 20px;
+            }
+            
+            input, select, textarea {
+                font-size: 16px !important;
+                padding: 10px;
+            }
+            
+            .btn {
+                padding: 12px;
+                font-size: 14px;
+            }
+            
+            .nav-item {
+                padding: 12px 20px;
+            }
+            
+            .control-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+            
+            .filter-section {
+                justify-content: center;
+            }
+            
+            .filter-btn {
+                padding: 6px 12px;
+                font-size: 14px;
+            }
+        }
+
+        /* منع zoom على input في iOS */
+        @media screen and (max-width: 768px) {
+            input, select, textarea {
+                font-size: 16px !important;
+            }
         }
 
         .menu-toggle {
@@ -702,6 +806,7 @@
             font-size: 24px;
             color: var(--primary);
             cursor: pointer;
+            touch-action: manipulation;
         }
 
         .pulse {
@@ -799,6 +904,55 @@
             font-size: 12px;
             color: #666;
         }
+
+        /* رسائل التنبيه */
+        .alert-message {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            padding: 15px 20px;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            z-index: 10000;
+            animation: slideIn 0.3s ease-out;
+            color: white;
+            font-weight: 600;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(-100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+            20%, 40%, 60%, 80% { transform: translateX(5px); }
+        }
+
+        /* تحسينات للأجهزة اللوحية */
+        @media (min-width: 769px) and (max-width: 1024px) {
+            .sidebar {
+                width: 220px;
+            }
+            
+            .main-content {
+                margin-right: 220px;
+            }
+            
+            .grid-view {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            }
+        }
+
+        /* تحسينات للتجربة على الهواتف */
+        .touch-feedback {
+            transition: transform 0.2s;
+        }
+
+        .touch-feedback:active {
+            transform: scale(0.95);
+        }
     </style>
 </head>
 <body>
@@ -807,7 +961,7 @@
             <div class="login-header">
                 <div class="login-logo">ع</div>
                 <h1>عراق ستار</h1>
-                <p>نظام الإدارة الديناميكي</p>
+                <p>نظام الدعم الفني</p>
             </div>
             
             <div class="login-body">
@@ -816,15 +970,15 @@
                 <form id="loginForm">
                     <div class="form-group">
                         <label>اسم المستخدم</label>
-                        <input type="text" id="username" required>
+                        <input type="text" id="username" required autocomplete="username">
                     </div>
                     
                     <div class="form-group">
                         <label>كلمة المرور</label>
-                        <input type="password" id="password" required>
+                        <input type="password" id="password" required autocomplete="current-password">
                     </div>
                     
-                    <button type="submit" class="btn btn-primary">
+                    <button type="submit" class="btn btn-primary touch-feedback">
                         تسجيل الدخول
                     </button>
                 </form>
@@ -841,31 +995,31 @@
             </div>
             
             <ul class="nav-menu">
-                <li class="nav-item active" data-page="dashboard">
+                <li class="nav-item active touch-feedback" data-page="dashboard">
                     <span class="nav-icon">📊</span>
                     <span>اللوحة الرئيسية</span>
                 </li>
-                <li class="nav-item" data-page="activity">
+                <li class="nav-item touch-feedback" data-page="activity">
                     <span class="nav-icon">👁️</span>
                     <span>نشاط المستخدمين</span>
                 </li>
-                <li class="nav-item" data-page="subscribers">
+                <li class="nav-item touch-feedback" data-page="subscribers">
                     <span class="nav-icon">👥</span>
                     <span>المشتركين</span>
                 </li>
-                <li class="nav-item" data-page="services">
+                <li class="nav-item touch-feedback" data-page="services">
                     <span class="nav-icon">🛠️</span>
                     <span>الخدمات</span>
                 </li>
-                <li class="nav-item" data-page="financial">
+                <li class="nav-item touch-feedback" data-page="financial">
                     <span class="nav-icon">💰</span>
                     <span>المالية</span>
                 </li>
-                <li class="nav-item" data-page="users">
+                <li class="nav-item touch-feedback" data-page="users">
                     <span class="nav-icon">👨‍💼</span>
                     <span>المستخدمين</span>
                 </li>
-                <li class="nav-item" data-page="settings">
+                <li class="nav-item touch-feedback" data-page="settings">
                     <span class="nav-icon">⚙️</span>
                     <span>الإعدادات</span>
                 </li>
@@ -878,14 +1032,14 @@
                 <div id="loginTime" style="font-size: 11px; color: #4CAF50; margin-top: 5px;"></div>
             </div>
             
-            <button class="logout-btn" id="logoutBtn">
+            <button class="logout-btn touch-feedback" id="logoutBtn">
                 تسجيل الخروج
             </button>
         </div>
 
         <div class="main-content">
             <div class="top-bar">
-                <button class="menu-toggle" id="menuToggle">
+                <button class="menu-toggle touch-feedback" id="menuToggle">
                     ☰
                 </button>
                 <h1 id="pageTitle">اللوحة الرئيسية</h1>
@@ -902,10 +1056,10 @@
                 <div class="control-header">
                     <h2>نظام التحكم الديناميكي</h2>
                     <div class="control-buttons">
-                        <button class="control-btn active" onclick="setViewMode('grid')">عرض البطاقات</button>
-                        <button class="control-btn" onclick="setViewMode('table')">عرض الجدول</button>
-                        <button class="control-btn" onclick="refreshData()">تحديث البيانات</button>
-                        <button class="control-btn" onclick="exportAllData()">تصدير الكل</button>
+                        <button class="control-btn active touch-feedback" onclick="setViewMode('grid')">عرض البطاقات</button>
+                        <button class="control-btn touch-feedback" onclick="setViewMode('table')">عرض الجدول</button>
+                        <button class="control-btn touch-feedback" onclick="refreshData()">تحديث البيانات</button>
+                        <button class="control-btn touch-feedback" onclick="exportAllData()">تصدير الكل</button>
                     </div>
                 </div>
                 
@@ -914,10 +1068,10 @@
                 </div>
                 
                 <div class="filter-section">
-                    <button class="filter-btn active" onclick="filterData('all')">الكل</button>
-                    <button class="filter-btn" onclick="filterData('active')">نشط</button>
-                    <button class="filter-btn" onclick="filterData('pending')">معلق</button>
-                    <button class="filter-btn" onclick="filterData('inactive')">متوقف</button>
+                    <button class="filter-btn active touch-feedback" onclick="filterData('all')">الكل</button>
+                    <button class="filter-btn touch-feedback" onclick="filterData('active')">نشط</button>
+                    <button class="filter-btn touch-feedback" onclick="filterData('pending')">معلق</button>
+                    <button class="filter-btn touch-feedback" onclick="filterData('inactive')">متوقف</button>
                 </div>
             </div>
 
@@ -1007,13 +1161,13 @@
                         <div class="control-header">
                             <h3>📝 سجل النشاطات التفصيلي</h3>
                             <div class="activity-filters">
-                                <button class="activity-filter-btn active" onclick="filterActivity('all')">الكل</button>
-                                <button class="activity-filter-btn" onclick="filterActivity('login')">تسجيلات دخول</button>
-                                <button class="activity-filter-btn" onclick="filterActivity('logout')">تسجيلات خروج</button>
-                                <button class="activity-filter-btn" onclick="filterActivity('add')">إضافات</button>
-                                <button class="activity-filter-btn" onclick="filterActivity('edit')">تعديلات</button>
-                                <button class="activity-filter-btn" onclick="filterActivity('delete')">حذف</button>
-                                <button class="activity-filter-btn" onclick="filterActivity('page')">تصفح الصفحات</button>
+                                <button class="activity-filter-btn active touch-feedback" onclick="filterActivity('all')">الكل</button>
+                                <button class="activity-filter-btn touch-feedback" onclick="filterActivity('login')">تسجيلات دخول</button>
+                                <button class="activity-filter-btn touch-feedback" onclick="filterActivity('logout')">تسجيلات خروج</button>
+                                <button class="activity-filter-btn touch-feedback" onclick="filterActivity('add')">إضافات</button>
+                                <button class="activity-filter-btn touch-feedback" onclick="filterActivity('edit')">تعديلات</button>
+                                <button class="activity-filter-btn touch-feedback" onclick="filterActivity('delete')">حذف</button>
+                                <button class="activity-filter-btn touch-feedback" onclick="filterActivity('page')">تصفح الصفحات</button>
                             </div>
                         </div>
                         
@@ -1025,7 +1179,7 @@
                 <div class="page" id="subscribersPage">
                     <div class="customization-panel">
                         <h3>إدارة المشتركين الديناميكية</h3>
-                        <button class="btn btn-primary" onclick="openAddModal()" style="margin-top: 15px;" id="addSubscriberBtn">
+                        <button class="btn btn-primary touch-feedback" onclick="openAddModal()" style="margin-top: 15px;" id="addSubscriberBtn">
                             + إضافة مشترك جديد
                         </button>
                     </div>
@@ -1038,7 +1192,7 @@
                     <div class="customization-panel">
                         <h3>إدارة الخدمات الديناميكية</h3>
                         <div style="margin-top: 15px;">
-                            <button class="btn btn-primary" onclick="openServiceModal()" id="addServiceBtn">
+                            <button class="btn btn-primary touch-feedback" onclick="openServiceModal()" id="addServiceBtn">
                                 + إضافة خدمة جديدة
                             </button>
                         </div>
@@ -1060,7 +1214,7 @@
                 <div class="page" id="usersPage">
                     <div class="customization-panel">
                         <h3>إدارة المستخدمين</h3>
-                        <button class="btn btn-primary" onclick="openUserModal()" style="margin-top: 15px;" id="addUserBtn">
+                        <button class="btn btn-primary touch-feedback" onclick="openUserModal()" style="margin-top: 15px;" id="addUserBtn">
                             + إضافة مستخدم جديد
                         </button>
                     </div>
@@ -1076,10 +1230,10 @@
                         <div style="margin-top: 20px;">
                             <h4 style="margin-bottom: 15px;">تغيير الثيم</h4>
                             <div class="theme-selector">
-                                <button class="theme-btn blue" onclick="changeTheme('blue')"></button>
-                                <button class="theme-btn green" onclick="changeTheme('green')"></button>
-                                <button class="theme-btn purple" onclick="changeTheme('purple')"></button>
-                                <button class="theme-btn dark" onclick="changeTheme('dark')"></button>
+                                <button class="theme-btn blue touch-feedback" onclick="changeTheme('blue')"></button>
+                                <button class="theme-btn green touch-feedback" onclick="changeTheme('green')"></button>
+                                <button class="theme-btn purple touch-feedback" onclick="changeTheme('purple')"></button>
+                                <button class="theme-btn dark touch-feedback" onclick="changeTheme('dark')"></button>
                             </div>
                         </div>
                         
@@ -1104,10 +1258,10 @@
                         <div style="margin-top: 30px; padding: 20px; background: #f9f9f9; border-radius: 8px;">
                             <h4 style="margin-bottom: 15px;">نسخ احتياطي</h4>
                             <div style="display: flex; gap: 10px;">
-                                <button class="btn btn-primary" onclick="backupData()">
+                                <button class="btn btn-primary touch-feedback" onclick="backupData()">
                                     📥 إنشاء نسخة احتياطية
                                 </button>
-                                <button class="btn btn-secondary" onclick="restoreData()">
+                                <button class="btn btn-secondary touch-feedback" onclick="restoreData()">
                                     📤 استعادة نسخة
                                 </button>
                             </div>
@@ -1116,10 +1270,10 @@
                         <div style="margin-top: 30px; padding: 20px; background: #f9f9f9; border-radius: 8px;">
                             <h4 style="margin-bottom: 15px;">تقارير النشاطات</h4>
                             <div style="display: flex; gap: 10px; flex-wrap: wrap;">
-                                <button class="btn btn-secondary" onclick="exportActivityLog()">
+                                <button class="btn btn-secondary touch-feedback" onclick="exportActivityLog()">
                                     📄 تصدير سجل النشاطات
                                 </button>
-                                <button class="btn btn-secondary" onclick="clearOldActivities()">
+                                <button class="btn btn-secondary touch-feedback" onclick="clearOldActivities()">
                                     🗑️ مسح النشاطات القديمة
                                 </button>
                             </div>
@@ -1134,7 +1288,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h3 id="modalTitle">إضافة مشترك جديد</h3>
-                <button class="close-modal" onclick="closeModal()">&times;</button>
+                <button class="close-modal touch-feedback" onclick="closeModal()">&times;</button>
             </div>
             <div class="modal-body">
                 <form id="addForm">
@@ -1190,8 +1344,8 @@
                     </div>
                     
                     <div style="display: flex; gap: 10px; margin-top: 25px;">
-                        <button type="submit" class="btn btn-primary" style="flex: 1;">حفظ</button>
-                        <button type="button" class="btn btn-secondary" onclick="closeModal()" style="flex: 1;">إلغاء</button>
+                        <button type="submit" class="btn btn-primary touch-feedback" style="flex: 1;">حفظ</button>
+                        <button type="button" class="btn btn-secondary touch-feedback" onclick="closeModal()" style="flex: 1;">إلغاء</button>
                     </div>
                 </form>
             </div>
@@ -1202,7 +1356,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h3 id="userModalTitle">إضافة مستخدم جديد</h3>
-                <button class="close-modal" onclick="closeUserModal()">&times;</button>
+                <button class="close-modal touch-feedback" onclick="closeUserModal()">&times;</button>
             </div>
             <div class="modal-body">
                 <form id="userForm">
@@ -1219,7 +1373,7 @@
                     
                     <div style="margin-top: 15px;">
                         <label>الاسم الكامل</label>
-                        <input type="text" id="userFullNameInput" required>
+                            <input type="text" id="userFullNameInput" required>
                     </div>
                     
                     <div style="margin-top: 15px;">
@@ -1237,8 +1391,8 @@
                     </div>
                     
                     <div style="display: flex; gap: 10px; margin-top: 25px;">
-                        <button type="submit" class="btn btn-primary" style="flex: 1;">حفظ</button>
-                        <button type="button" class="btn btn-secondary" onclick="closeUserModal()" style="flex: 1;">إلغاء</button>
+                        <button type="submit" class="btn btn-primary touch-feedback" style="flex: 1;">حفظ</button>
+                        <button type="button" class="btn btn-secondary touch-feedback" onclick="closeUserModal()" style="flex: 1;">إلغاء</button>
                     </div>
                 </form>
             </div>
@@ -1249,7 +1403,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h3 id="serviceModalTitle">إضافة خدمة جديدة</h3>
-                <button class="close-modal" onclick="closeServiceModal()">&times;</button>
+                <button class="close-modal touch-feedback" onclick="closeServiceModal()">&times;</button>
             </div>
             <div class="modal-body">
                 <form id="serviceForm">
@@ -1286,8 +1440,8 @@
                     </div>
                     
                     <div style="display: flex; gap: 10px; margin-top: 25px;">
-                        <button type="submit" class="btn btn-primary" style="flex: 1;">حفظ</button>
-                        <button type="button" class="btn btn-secondary" onclick="closeServiceModal()" style="flex: 1;">إلغاء</button>
+                        <button type="submit" class="btn btn-primary touch-feedback" style="flex: 1;">حفظ</button>
+                        <button type="button" class="btn btn-secondary touch-feedback" onclick="closeServiceModal()" style="flex: 1;">إلغاء</button>
                     </div>
                 </form>
             </div>
@@ -1322,6 +1476,7 @@
                 this.applyTheme();
                 this.setupRealTimeUpdates();
                 this.checkLogin();
+                this.disableZoom();
             }
 
             setupEventListeners() {
@@ -1360,20 +1515,72 @@
                     this.saveService();
                 });
 
+                // إغلاق القائمة عند النقر خارجها على الموبايل
+                document.addEventListener('click', (e) => {
+                    const sidebar = document.getElementById('sidebar');
+                    const menuToggle = document.getElementById('menuToggle');
+                    
+                    if (window.innerWidth <= 768 && 
+                        sidebar.classList.contains('active') &&
+                        !sidebar.contains(e.target) && 
+                        e.target !== menuToggle) {
+                        sidebar.classList.remove('active');
+                    }
+                });
+
+                // تحديث تلقائي للإعدادات
                 setInterval(() => {
                     if (this.settings.autoRefresh && this.currentUser) {
                         this.renderAll();
                     }
                 }, 30000);
 
+                // تتبع حالة الاتصال
                 window.addEventListener('online', () => this.updateOnlineStatus());
                 window.addEventListener('offline', () => this.updateOnlineStatus());
 
+                // حفظ البيانات عند إغلاق الصفحة
                 window.addEventListener('beforeunload', () => {
                     if (this.currentUser) {
                         this.logoutActivity('انتهاء الجلسة', true);
                     }
                 });
+
+                // تحسين تجربة اللمس
+                this.setupTouchEvents();
+            }
+
+            setupTouchEvents() {
+                // تحسين اللمس للأزرار
+                document.querySelectorAll('.touch-feedback').forEach(button => {
+                    button.addEventListener('touchstart', function() {
+                        this.classList.add('active');
+                    });
+                    
+                    button.addEventListener('touchend', function() {
+                        this.classList.remove('active');
+                    });
+                });
+
+                // منع التمرير الأفقي غير المقصود
+                document.addEventListener('touchmove', function(e) {
+                    if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') {
+                        return;
+                    }
+                }, { passive: false });
+            }
+
+            disableZoom() {
+                // منع التكبير/التصغير على الموبايل
+                document.addEventListener('gesturestart', function(e) {
+                    e.preventDefault();
+                });
+
+                document.addEventListener('touchmove', function(e) {
+                    if (e.scale !== 1) {
+                        e.preventDefault();
+                    }
+                }, { passive: false });
             }
 
             setupRealTimeUpdates() {
@@ -1422,45 +1629,73 @@
             }
 
             loadData(key) {
-                const data = localStorage.getItem(key);
                 try {
+                    const data = localStorage.getItem(key);
                     return data ? JSON.parse(data) : null;
-                } catch {
+                } catch (error) {
+                    console.error(`Error loading ${key}:`, error);
                     return null;
                 }
             }
 
             saveData(key, data) {
-                localStorage.setItem(key, JSON.stringify(data));
+                try {
+                    localStorage.setItem(key, JSON.stringify(data));
+                } catch (error) {
+                    console.error(`Error saving ${key}:`, error);
+                }
             }
 
             handleLogin() {
-                const username = document.getElementById('username').value;
+                const username = document.getElementById('username').value.trim();
                 const password = document.getElementById('password').value;
                 
-                const user = this.users.find(u => u.username === username && u.password === password);
+                if (!username || !password) {
+                    this.showError('يرجى إدخال اسم المستخدم وكلمة المرور');
+                    return;
+                }
+                
+                const user = this.users.find(u => 
+                    u.username.toLowerCase() === username.toLowerCase() && 
+                    u.password === password
+                );
                 
                 if (user) {
                     this.currentUser = user;
                     this.userLoginTime = new Date();
-                    localStorage.setItem('currentUser', JSON.stringify(user));
                     
+                    // حفظ بيانات الجلسة
+                    try {
+                        localStorage.setItem('currentUser', JSON.stringify(user));
+                    } catch (e) {
+                        console.error('Error saving session:', e);
+                    }
+                    
+                    // تحديث وقت آخر دخول
                     user.lastLogin = new Date().toISOString();
                     this.saveData('users', this.users);
                     
+                    // تسجيل النشاط
                     this.logActivity('login', `قام ${user.fullName} بتسجيل الدخول إلى النظام`);
                     this.addOnlineUser(user);
+                    
+                    // عرض لوحة التحكم
                     this.showDashboard();
                     this.showMessage('تم تسجيل الدخول بنجاح', 'success');
+                    
+                    // إعادة تعيين نموذج تسجيل الدخول
+                    document.getElementById('loginForm').reset();
                 } else {
                     this.showError('اسم المستخدم أو كلمة المرور غير صحيحة');
+                    document.getElementById('password').value = '';
+                    document.getElementById('password').focus();
                 }
             }
 
             checkLogin() {
-                const savedUser = localStorage.getItem('currentUser');
-                if (savedUser) {
-                    try {
+                try {
+                    const savedUser = localStorage.getItem('currentUser');
+                    if (savedUser) {
                         this.currentUser = JSON.parse(savedUser);
                         const userExists = this.users.some(u => u.id === this.currentUser.id);
                         
@@ -1473,9 +1708,10 @@
                             localStorage.removeItem('currentUser');
                             this.currentUser = null;
                         }
-                    } catch {
-                        localStorage.removeItem('currentUser');
                     }
+                } catch (error) {
+                    localStorage.removeItem('currentUser');
+                    this.currentUser = null;
                 }
             }
 
@@ -1488,12 +1724,22 @@
                     }
                     
                     this.currentUser = null;
-                    localStorage.removeItem('currentUser');
+                    try {
+                        localStorage.removeItem('currentUser');
+                    } catch (e) {
+                        console.error('Error clearing session:', e);
+                    }
+                    
                     document.getElementById('dashboard').style.display = 'none';
                     document.getElementById('loginPage').style.display = 'flex';
                     document.getElementById('username').value = '';
                     document.getElementById('password').value = '';
                     this.showMessage('تم تسجيل الخروج', 'success');
+                    
+                    // إغلاق القائمة الجانبية إذا كانت مفتوحة
+                    if (window.innerWidth <= 768) {
+                        document.getElementById('sidebar').classList.remove('active');
+                    }
                 }
             }
 
@@ -1522,12 +1768,21 @@
                 document.getElementById('loginPage').style.display = 'none';
                 document.getElementById('dashboard').style.display = 'block';
                 
+                // تحديث معلومات المستخدم
                 document.getElementById('currentUser').textContent = this.currentUser.fullName;
                 document.getElementById('currentRole').textContent = this.getRoleText(this.currentUser.role);
                 this.updateLoginTimeDisplay();
                 
+                // التحقق من الصلاحيات
                 this.checkPermissions();
+                
+                // عرض البيانات
                 this.renderAll();
+                
+                // إغلاق القائمة الجانبية على الموبايل
+                if (window.innerWidth <= 768) {
+                    document.getElementById('sidebar').classList.remove('active');
+                }
             }
 
             updateLoginTimeDisplay() {
@@ -1563,30 +1818,49 @@
                 const isAdmin = this.currentUser.role === 'admin';
                 const isEditor = this.currentUser.role === 'editor' || isAdmin;
                 
-                const activityNavItem = document.querySelector('.nav-item[data-page="activity"]');
-                if (activityNavItem) activityNavItem.style.display = isEditor ? 'flex' : 'none';
+                // إظهار/إخفاء العناصر حسب الصلاحيات
+                document.querySelectorAll('.nav-item[data-page="activity"]').forEach(item => {
+                    item.style.display = isEditor ? 'flex' : 'none';
+                });
                 
-                const usersNavItem = document.querySelector('.nav-item[data-page="users"]');
-                const addUserBtn = document.getElementById('addUserBtn');
+                document.querySelectorAll('.nav-item[data-page="users"]').forEach(item => {
+                    item.style.display = isAdmin ? 'flex' : 'none';
+                });
                 
-                if (usersNavItem) usersNavItem.style.display = isAdmin ? 'flex' : 'none';
-                if (addUserBtn) addUserBtn.style.display = isAdmin ? 'block' : 'none';
-                
-                const addSubscriberBtn = document.getElementById('addSubscriberBtn');
-                if (addSubscriberBtn) addSubscriberBtn.style.display = isEditor ? 'block' : 'none';
-                
-                const addServiceBtn = document.getElementById('addServiceBtn');
-                if (addServiceBtn) addServiceBtn.style.display = isEditor ? 'block' : 'none';
+                document.getElementById('addUserBtn').style.display = isAdmin ? 'block' : 'none';
+                document.getElementById('addSubscriberBtn').style.display = isEditor ? 'block' : 'none';
+                document.getElementById('addServiceBtn').style.display = isEditor ? 'block' : 'none';
             }
 
             showError(message) {
                 const errorDiv = document.getElementById('loginError');
                 errorDiv.textContent = message;
-                errorDiv.style.display = 'block';
+                errorDiv.style.cssText = `
+                    display: block;
+                    background: #ffebee;
+                    color: #c62828;
+                    padding: 15px;
+                    border-radius: 8px;
+                    margin-bottom: 20px;
+                    text-align: center;
+                    font-size: 14px;
+                    animation: shake 0.5s;
+                `;
+                
+                // إضافة animation للهز
+                const style = document.createElement('style');
+                style.textContent = `
+                    @keyframes shake {
+                        0%, 100% { transform: translateX(0); }
+                        10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+                        20%, 40%, 60%, 80% { transform: translateX(5px); }
+                    }
+                `;
+                document.head.appendChild(style);
                 
                 setTimeout(() => {
                     errorDiv.style.display = 'none';
-                }, 3000);
+                }, 5000);
             }
 
             logActivity(type, action, details = {}) {
@@ -1608,12 +1882,14 @@
                 
                 this.activityLog.unshift(activity);
                 
+                // حفظ فقط آخر 1000 نشاط
                 if (this.activityLog.length > 1000) {
                     this.activityLog = this.activityLog.slice(0, 1000);
                 }
                 
                 this.saveData('activityLog', this.activityLog);
                 
+                // تحديث عرض النشاطات إذا كانت الصفحة مفتوحة
                 if (document.getElementById('activityPage').classList.contains('active')) {
                     this.renderActivityLog();
                     this.updateActivityStats();
@@ -1645,6 +1921,7 @@
             updateOnlineUsers() {
                 const now = new Date();
                 
+                // تحديث وقت آخر نشاط للمستخدم الحالي
                 if (this.currentUser) {
                     const userIndex = this.onlineUsers.findIndex(u => u.id === this.currentUser.id);
                     if (userIndex !== -1) {
@@ -1652,6 +1929,7 @@
                     }
                 }
                 
+                // إزالة المستخدمين غير النشطين لأكثر من 5 دقائق
                 const fiveMinutesAgo = new Date(now.getTime() - 5 * 60000);
                 this.onlineUsers = this.onlineUsers.filter(user => {
                     return new Date(user.lastActivity) > fiveMinutesAgo;
@@ -1659,6 +1937,7 @@
                 
                 this.saveData('onlineUsers', this.onlineUsers);
                 
+                // تحديث العرض إذا كانت صفحة النشاط مفتوحة
                 if (document.getElementById('activityPage').classList.contains('active')) {
                     this.renderOnlineUsers();
                     this.updateActivityStats();
@@ -1666,9 +1945,18 @@
             }
 
             switchPage(page) {
-                document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-                document.getElementById(page + 'Page').classList.add('active');
+                // إخفاء جميع الصفحات
+                document.querySelectorAll('.page').forEach(p => {
+                    p.classList.remove('active');
+                    p.style.display = 'none';
+                });
                 
+                // إظهار الصفحة المطلوبة
+                const targetPage = document.getElementById(page + 'Page');
+                targetPage.classList.add('active');
+                targetPage.style.display = 'block';
+                
+                // تحديث العنوان
                 const titles = {
                     'dashboard': 'اللوحة الرئيسية',
                     'activity': 'نشاط المستخدمين',
@@ -1680,10 +1968,12 @@
                 };
                 document.getElementById('pageTitle').textContent = titles[page];
                 
+                // تسجيل نشاط تصفح الصفحة
                 if (this.currentUser && page !== 'dashboard') {
                     this.logActivity('page', `تصفح صفحة ${titles[page]}`, { page: page });
                 }
                 
+                // تحديث محتوى الصفحة
                 switch(page) {
                     case 'activity':
                         this.renderActivityPage();
@@ -1707,6 +1997,7 @@
                         this.renderDashboard();
                 }
 
+                // تحديث القائمة الجانبية
                 document.querySelectorAll('.nav-item').forEach(item => {
                     item.classList.remove('active');
                     if (item.getAttribute('data-page') === page) {
@@ -1714,6 +2005,7 @@
                     }
                 });
 
+                // إغلاق القائمة الجانبية على الموبايل
                 if (window.innerWidth <= 768) {
                     document.getElementById('sidebar').classList.remove('active');
                 }
@@ -1742,7 +2034,7 @@
                     html = '<div class="grid-view">';
                     demoData.forEach(item => {
                         html += `
-                            <div class="card fade-in">
+                            <div class="card fade-in touch-feedback">
                                 <h4>${item.name}</h4>
                                 <p>${item.service}</p>
                                 <div style="display: flex; justify-content: space-between; margin-top: 15px;">
@@ -1809,10 +2101,10 @@
                                 ${this.currentUser.role !== 'viewer' ? `
                                 <td>
                                     <div class="action-buttons">
-                                        <button class="action-btn edit" onclick="editItem(${item.id})">
+                                        <button class="action-btn edit touch-feedback" onclick="editItem(${item.id})">
                                             تعديل
                                         </button>
-                                        <button class="action-btn delete" onclick="deleteItem(${item.id})">
+                                        <button class="action-btn delete touch-feedback" onclick="deleteItem(${item.id})">
                                             حذف
                                         </button>
                                     </div>
@@ -1846,6 +2138,7 @@
                 document.getElementById('pendingCount').textContent = pending;
                 document.getElementById('revenueCount').textContent = revenue.toLocaleString() + ' دينار';
                 
+                // تحريك أشرطة التقدم
                 setTimeout(() => {
                     document.getElementById('totalProgress').style.width = '100%';
                     document.getElementById('activeProgress').style.width = `${(active/total)*100}%`;
@@ -1881,7 +2174,7 @@
                         }
                         
                         html += `
-                            <div class="online-user-badge">
+                            <div class="online-user-badge touch-feedback">
                                 <span class="online-indicator"></span>
                                 <span>${user.name}</span>
                                 <span style="font-size: 11px; opacity: 0.8;">(${this.getRoleText(user.role)})</span>
@@ -2042,10 +2335,10 @@
                                 </div>
                                 ${this.currentUser.role !== 'viewer' ? `
                                 <div class="action-buttons" style="margin-top: 15px;">
-                                    <button class="action-btn edit" onclick="editSubscriber(${subscriber.id})">
+                                    <button class="action-btn edit touch-feedback" onclick="editSubscriber(${subscriber.id})">
                                         تعديل
                                     </button>
-                                    <button class="action-btn delete" onclick="deleteSubscriber(${subscriber.id})">
+                                    <button class="action-btn delete touch-feedback" onclick="deleteSubscriber(${subscriber.id})">
                                         حذف
                                     </button>
                                 </div>
@@ -2094,10 +2387,10 @@
                                 ${this.currentUser.role !== 'viewer' ? `
                                 <td>
                                     <div class="action-buttons">
-                                        <button class="action-btn edit" onclick="editSubscriber(${subscriber.id})">
+                                        <button class="action-btn edit touch-feedback" onclick="editSubscriber(${subscriber.id})">
                                             تعديل
                                         </button>
-                                        <button class="action-btn delete" onclick="deleteSubscriber(${subscriber.id})">
+                                        <button class="action-btn delete touch-feedback" onclick="deleteSubscriber(${subscriber.id})">
                                             حذف
                                         </button>
                                     </div>
@@ -2141,10 +2434,10 @@
                             </p>
                             ${this.currentUser.role !== 'viewer' ? `
                             <div class="action-buttons" style="margin-top: 15px;">
-                                <button class="action-btn edit" onclick="editService(${service.id})">
+                                <button class="action-btn edit touch-feedback" onclick="editService(${service.id})">
                                     تعديل
                                 </button>
-                                <button class="action-btn delete" onclick="deleteService(${service.id})">
+                                <button class="action-btn delete touch-feedback" onclick="deleteService(${service.id})">
                                     حذف
                                 </button>
                             </div>
@@ -2180,11 +2473,11 @@
                             <p style="color: #666; margin: 5px 0;">البريد: ${user.email || '-'}</p>
                             <span class="user-role ${roleClass}">${this.getRoleText(user.role)}</span>
                             <div class="action-buttons" style="margin-top: 15px;">
-                                <button class="action-btn edit" onclick="editUser(${user.id})">
+                                <button class="action-btn edit touch-feedback" onclick="editUser(${user.id})">
                                     تعديل
                                 </button>
                                 ${user.id !== this.currentUser.id ? `
-                                <button class="action-btn delete" onclick="deleteUser(${user.id})">
+                                <button class="action-btn delete touch-feedback" onclick="deleteUser(${user.id})">
                                     حذف
                                 </button>
                                 ` : ''}
@@ -2311,6 +2604,7 @@
                     document.getElementById('statusInput').value = 'active';
                 }
                 
+                // تعبئة خدمات
                 const serviceSelect = document.getElementById('serviceInput');
                 serviceSelect.innerHTML = '<option value="">اختر الخدمة</option>';
                 this.services.forEach(service => {
@@ -2323,6 +2617,7 @@
                     serviceSelect.appendChild(option);
                 });
                 
+                // تعبئة المحافظات
                 const governorates = [
                     'بغداد', 'البصرة', 'نينوى', 'أربيل', 'السليمانية', 'ذي قار',
                     'المثنى', 'القادسية', 'بابل', 'كربلاء', 'النجف', 'الأنبار',
@@ -2347,17 +2642,23 @@
             saveSubscriber() {
                 const subscriber = {
                     id: this.editingId || Date.now(),
-                    name: document.getElementById('nameInput').value,
-                    phone: document.getElementById('phoneInput').value,
-                    email: document.getElementById('emailInput').value,
+                    name: document.getElementById('nameInput').value.trim(),
+                    phone: document.getElementById('phoneInput').value.trim(),
+                    email: document.getElementById('emailInput').value.trim(),
                     service: document.getElementById('serviceInput').value,
-                    price: parseInt(document.getElementById('priceInput').value),
+                    price: parseInt(document.getElementById('priceInput').value) || 0,
                     governorate: document.getElementById('governorateInput').value,
                     status: document.getElementById('statusInput').value,
-                    notes: document.getElementById('notesInput').value,
+                    notes: document.getElementById('notesInput').value.trim(),
                     date: new Date().toLocaleDateString('ar-IQ'),
                     createdBy: this.currentUser.id
                 };
+                
+                // التحقق من البيانات
+                if (!subscriber.name || !subscriber.phone || !subscriber.service) {
+                    this.showMessage('يرجى ملء جميع الحقول المطلوبة', 'error');
+                    return;
+                }
                 
                 const actionType = this.editingId ? 'edit' : 'add';
                 const actionText = this.editingId ? 'تعديل' : 'إضافة';
@@ -2517,11 +2818,17 @@
             saveService() {
                 const service = {
                     id: this.editingId || Date.now(),
-                    name: document.getElementById('serviceNameInput').value,
+                    name: document.getElementById('serviceNameInput').value.trim(),
                     category: document.getElementById('serviceCategoryInput').value,
                     priceRange: `${document.getElementById('serviceMinPrice').value} - ${document.getElementById('serviceMaxPrice').value}`,
-                    description: document.getElementById('serviceDescription').value
+                    description: document.getElementById('serviceDescription').value.trim()
                 };
+                
+                // التحقق من البيانات
+                if (!service.name || !service.category) {
+                    this.showMessage('يرجى ملء جميع الحقول المطلوبة', 'error');
+                    return;
+                }
                 
                 const actionType = this.editingId ? 'edit' : 'add';
                 const actionText = this.editingId ? 'تعديل' : 'إضافة';
@@ -2585,16 +2892,22 @@
             saveUser() {
                 const user = {
                     id: this.editingId || Date.now(),
-                    username: document.getElementById('userNameInput').value,
+                    username: document.getElementById('userNameInput').value.trim(),
                     password: document.getElementById('userPasswordInput').value || 'password123',
-                    fullName: document.getElementById('userFullNameInput').value,
+                    fullName: document.getElementById('userFullNameInput').value.trim(),
                     role: document.getElementById('userRoleInput').value,
-                    email: document.getElementById('userEmailInput').value,
+                    email: document.getElementById('userEmailInput').value.trim(),
                     created: new Date().toISOString()
                 };
                 
+                // التحقق من البيانات
+                if (!user.username || !user.fullName) {
+                    this.showMessage('يرجى ملء جميع الحقول المطلوبة', 'error');
+                    return;
+                }
+                
                 if (!this.editingId) {
-                    const exists = this.users.some(u => u.username === user.username);
+                    const exists = this.users.some(u => u.username.toLowerCase() === user.username.toLowerCase());
                     if (exists) {
                         this.showMessage('اسم المستخدم موجود بالفعل', 'error');
                         return;
@@ -2611,7 +2924,11 @@
                         
                         if (user.id === this.currentUser.id) {
                             this.currentUser = user;
-                            localStorage.setItem('currentUser', JSON.stringify(user));
+                            try {
+                                localStorage.setItem('currentUser', JSON.stringify(user));
+                            } catch (e) {
+                                console.error('Error updating session:', e);
+                            }
                             document.getElementById('currentUser').textContent = user.fullName;
                             document.getElementById('currentRole').textContent = this.getRoleText(user.role);
                             this.checkPermissions();
@@ -2727,16 +3044,18 @@
                 
                 if (isOnline) {
                     statusElement.innerHTML = `
-                        <span style="width: 10px; height: 10px; background: var(--success); border-radius: 50%;"></span>
+                        <span style="width: 10px; height: 10px; background: var(--success); border-radius: 50%; animation: pulse 2s infinite;"></span>
                         <span>متصل</span>
                     `;
                     statusElement.style.color = 'var(--success)';
+                    this.showMessage('تم استعادة الاتصال بالإنترنت', 'success');
                 } else {
                     statusElement.innerHTML = `
                         <span style="width: 10px; height: 10px; background: var(--danger); border-radius: 50%;"></span>
                         <span>غير متصل</span>
                     `;
                     statusElement.style.color = 'var(--danger)';
+                    this.showMessage('فقدت الاتصال بالإنترنت', 'warning');
                 }
             }
 
@@ -2775,20 +3094,26 @@
                     services: this.services,
                     settings: this.settings,
                     financial: this.financialData,
-                    activityLog: this.activityLog
+                    activityLog: this.activityLog,
+                    backupDate: new Date().toISOString(),
+                    system: 'عراق ستار'
                 };
                 
-                const dataStr = JSON.stringify(data, null, 2);
-                const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
-                
-                const exportFileDefaultName = `عراق-ستار-نسخة-احتياطية-${new Date().toISOString().split('T')[0]}.json`;
-                
-                const linkElement = document.createElement('a');
-                linkElement.setAttribute('href', dataUri);
-                linkElement.setAttribute('download', exportFileDefaultName);
-                linkElement.click();
-                
-                this.showMessage('تم إنشاء النسخة الاحتياطية', 'success');
+                try {
+                    const dataStr = JSON.stringify(data, null, 2);
+                    const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
+                    
+                    const exportFileDefaultName = `عراق-ستار-نسخة-احتياطية-${new Date().toISOString().split('T')[0]}.json`;
+                    
+                    const linkElement = document.createElement('a');
+                    linkElement.setAttribute('href', dataUri);
+                    linkElement.setAttribute('download', exportFileDefaultName);
+                    linkElement.click();
+                    
+                    this.showMessage('تم إنشاء النسخة الاحتياطية', 'success');
+                } catch (error) {
+                    this.showMessage('حدث خطأ أثناء إنشاء النسخة الاحتياطية', 'error');
+                }
             }
 
             restoreData() {
@@ -2798,36 +3123,40 @@
                 
                 input.onchange = e => {
                     const file = e.target.files[0];
+                    if (!file) return;
+                    
                     const reader = new FileReader();
                     
                     reader.onload = event => {
                         try {
                             const data = JSON.parse(event.target.result);
                             
-                            if (confirm('هل تريد استعادة النسخة الاحتياطية؟ سيتم فقدان البيانات الحالية.')) {
-                                this.users = data.users || this.getDefaultUsers();
-                                this.subscribers = data.subscribers || [];
-                                this.services = data.services || this.getDefaultServices();
-                                this.settings = data.settings || this.getDefaultSettings();
-                                this.financialData = data.financial || [];
-                                this.activityLog = data.activityLog || [];
-                                this.onlineUsers = [];
-                                
-                                this.saveData('users', this.users);
-                                this.saveData('subscribers', this.subscribers);
-                                this.saveData('services', this.services);
-                                this.saveData('settings', this.settings);
-                                this.saveData('financial', this.financialData);
-                                this.saveData('activityLog', this.activityLog);
-                                this.saveData('onlineUsers', this.onlineUsers);
-                                
-                                this.showMessage('تم استعادة النسخة الاحتياطية بنجاح', 'success');
-                                setTimeout(() => {
-                                    location.reload();
-                                }, 2000);
+                            if (!confirm('هل تريد استعادة النسخة الاحتياطية؟ سيتم فقدان البيانات الحالية.')) {
+                                return;
                             }
+                            
+                            this.users = data.users || this.getDefaultUsers();
+                            this.subscribers = data.subscribers || [];
+                            this.services = data.services || this.getDefaultServices();
+                            this.settings = data.settings || this.getDefaultSettings();
+                            this.financialData = data.financial || [];
+                            this.activityLog = data.activityLog || [];
+                            this.onlineUsers = [];
+                            
+                            this.saveData('users', this.users);
+                            this.saveData('subscribers', this.subscribers);
+                            this.saveData('services', this.services);
+                            this.saveData('settings', this.settings);
+                            this.saveData('financial', this.financialData);
+                            this.saveData('activityLog', this.activityLog);
+                            this.saveData('onlineUsers', this.onlineUsers);
+                            
+                            this.showMessage('تم استعادة النسخة الاحتياطية بنجاح', 'success');
+                            setTimeout(() => {
+                                location.reload();
+                            }, 2000);
                         } catch (error) {
-                            this.showMessage('خطأ في قراءة الملف', 'error');
+                            this.showMessage('خطأ في قراءة الملف أو الملف غير صالح', 'error');
                         }
                     };
                     
@@ -2843,23 +3172,28 @@
                     return;
                 }
                 
-                const data = {
-                    exportDate: new Date().toISOString(),
-                    totalActivities: this.activityLog.length,
-                    activities: this.activityLog
-                };
-                
-                const dataStr = JSON.stringify(data, null, 2);
-                const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
-                
-                const exportFileDefaultName = `سجل-النشاطات-${new Date().toISOString().split('T')[0]}.json`;
-                
-                const linkElement = document.createElement('a');
-                linkElement.setAttribute('href', dataUri);
-                linkElement.setAttribute('download', exportFileDefaultName);
-                linkElement.click();
-                
-                this.showMessage('تم تصدير سجل النشاطات', 'success');
+                try {
+                    const data = {
+                        exportDate: new Date().toISOString(),
+                        totalActivities: this.activityLog.length,
+                        system: 'عراق ستار',
+                        activities: this.activityLog
+                    };
+                    
+                    const dataStr = JSON.stringify(data, null, 2);
+                    const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
+                    
+                    const exportFileDefaultName = `سجل-النشاطات-${new Date().toISOString().split('T')[0]}.json`;
+                    
+                    const linkElement = document.createElement('a');
+                    linkElement.setAttribute('href', dataUri);
+                    linkElement.setAttribute('download', exportFileDefaultName);
+                    linkElement.click();
+                    
+                    this.showMessage('تم تصدير سجل النشاطات', 'success');
+                } catch (error) {
+                    this.showMessage('حدث خطأ أثناء التصدير', 'error');
+                }
             }
 
             clearOldActivities() {
@@ -2918,40 +3252,34 @@
             }
 
             showMessage(message, type = 'info') {
+                // إزالة الرسائل السابقة
+                document.querySelectorAll('.alert-message').forEach(msg => msg.remove());
+                
+                const colors = {
+                    success: '#4CAF50',
+                    error: '#f44336',
+                    warning: '#FF9800',
+                    info: '#2196F3'
+                };
+                
                 const messageDiv = document.createElement('div');
-                messageDiv.innerHTML = `
-                    <div style="
-                        position: fixed;
-                        top: 20px;
-                        left: 20px;
-                        background: ${type === 'success' ? '#4CAF50' : 
-                                    type === 'error' ? '#f44336' : 
-                                    type === 'warning' ? '#FF9800' : '#2196F3'};
-                        color: white;
-                        padding: 15px 20px;
-                        border-radius: 8px;
-                        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-                        z-index: 10000;
-                        animation: slideIn 0.3s ease-out;
-                    ">
-                        ${message}
-                    </div>
-                `;
+                messageDiv.className = 'alert-message';
+                messageDiv.textContent = message;
+                messageDiv.style.background = colors[type] || colors.info;
                 
                 document.body.appendChild(messageDiv);
                 
                 setTimeout(() => {
-                    messageDiv.remove();
-                }, 3000);
-                
-                const style = document.createElement('style');
-                style.textContent = `
-                    @keyframes slideIn {
-                        from { transform: translateX(-100%); opacity: 0; }
-                        to { transform: translateX(0); opacity: 1; }
+                    if (messageDiv.parentNode) {
+                        messageDiv.style.opacity = '0';
+                        messageDiv.style.transform = 'translateX(-100%)';
+                        setTimeout(() => {
+                            if (messageDiv.parentNode) {
+                                messageDiv.remove();
+                            }
+                        }, 300);
                     }
-                `;
-                document.head.appendChild(style);
+                }, 3000);
             }
 
             exportAllData() {
@@ -2969,6 +3297,7 @@
             }
         }
 
+        // تهيئة النظام
         const dynamicManager = new DynamicManager();
 
         // دوال عامة للاستدعاء من HTML
@@ -3075,6 +3404,18 @@
 
         function deleteUser(id) {
             dynamicManager.deleteUser(id);
+        }
+
+        // تحسينات إضافية للموبايل
+        window.addEventListener('resize', function() {
+            if (window.innerWidth > 768) {
+                document.getElementById('sidebar').classList.remove('active');
+            }
+        });
+
+        // تحسين تجربة اللمس للأجهزة المحمولة
+        if ('ontouchstart' in window) {
+            document.body.classList.add('touch-device');
         }
     </script>
 </body>
