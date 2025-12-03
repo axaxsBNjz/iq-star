@@ -1628,23 +1628,92 @@
                 };
             }
 
-            // تم تعديل هذه الدالة لتمكين العمل على جميع الأجهزة (تم إزالة localStorage)
-            // الآن، يتم محاكاة جلب البيانات من الخادم (Backend)
-            loadData(key) {
-                // في النظام الجديد، يجب أن تقوم هذه الدالة بإجراء طلب (fetch) لجلب البيانات من الخادم
-                // حالياً، تم إرجاع 'null' لضمان تحميل البيانات الافتراضية (getDefault)
-                return null;
+            // جلب البيانات من الخادم (Backend)
+            async loadData(key) {
+                try {
+                    let url = '';
+                    
+                    switch(key) {
+                        case 'users':
+                            url = '../backend/api/users.php';
+                            break;
+                        case 'subscribers':
+                            url = '../backend/api/subscribers.php';
+                            break;
+                        case 'services':
+                            url = '../backend/api/services.php';
+                            break;
+                        case 'activityLog':
+                            url = '../backend/api/activity.php';
+                            break;
+                        case 'financial':
+                            url = '../backend/api/financial.php?action=monthly';
+                            break;
+                        default:
+                            return null;
+                    }
+                    
+                    const response = await fetch(url);
+                    if (!response.ok) {
+                        console.warn(`خطأ في جلب ${key}: ${response.status}`);
+                        return null;
+                    }
+                    
+                    const result = await response.json();
+                    return result.success ? result.data : null;
+                } catch (error) {
+                    console.error(`خطأ في تحميل ${key}:`, error);
+                    return null;
+                }
             }
 
-            // تم تعديل هذه الدالة لتمكين العمل على جميع الأجهزة (تم إزالة localStorage)
-            // الآن، يتم محاكاة حفظ البيانات على الخادم (Backend)
-            saveData(key, data) {
-                // في النظام الجديد، يجب أن تقوم هذه الدالة بإجراء طلب (fetch) لحفظ البيانات على الخادم
-                // حالياً، لا تقوم بأي شيء لمنع الحفظ المحلي
-                // console.log(`Mock save to server for key: ${key}`, data);
+            // حفظ البيانات على الخادم (Backend)
+            async saveData(key, data) {
+                try {
+                    let url = '';
+                    let method = 'POST';
+                    
+                    switch(key) {
+                        case 'users':
+                            url = '../backend/api/users.php';
+                            break;
+                        case 'subscribers':
+                            url = '../backend/api/subscribers.php';
+                            break;
+                        case 'services':
+                            url = '../backend/api/services.php';
+                            break;
+                        case 'activityLog':
+                            url = '../backend/api/activity.php';
+                            break;
+                        case 'financial':
+                            url = '../backend/api/financial.php';
+                            break;
+                        default:
+                            return false;
+                    }
+                    
+                    const response = await fetch(url, {
+                        method: method,
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(data)
+                    });
+                    
+                    if (!response.ok) {
+                        console.warn(`خطأ في حفظ ${key}: ${response.status}`);
+                        return false;
+                    }
+                    
+                    return true;
+                } catch (error) {
+                    console.error(`خطأ في حفظ ${key}:`, error);
+                    return false;
+                }
             }
 
-            handleLogin() {
+            async handleLogin() {
                 const username = document.getElementById('username').value.trim();
                 const password = document.getElementById('password').value;
                 
@@ -1653,40 +1722,46 @@
                     return;
                 }
                 
-                const user = this.users.find(u => 
-                    u.username.toLowerCase() === username.toLowerCase() && 
-                    u.password === password
-                );
-                
-                if (user) {
-                    this.currentUser = user;
-                    this.userLoginTime = new Date();
+                try {
+                    // طلب تسجيل الدخول من API
+                    const response = await fetch('../backend/api/users.php?action=login', {
+                        method: 'GET',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ username, password })
+                    });
                     
-                    // حفظ بيانات الجلسة
-                    try {
-                        // تم إزالة الحفظ المحلي لـ currentUser - يجب استخدام جلسات الخادم (Server Sessions)
-                    } catch (e) {
-                        console.error('Error saving session:', e);
+                    if (!response.ok) {
+                        this.showError('خطأ في الاتصال بالخادم');
+                        return;
                     }
                     
-                    // تحديث وقت آخر دخول
-                    user.lastLogin = new Date().toISOString();
-                    this.saveData('users', this.users);
+                    const result = await response.json();
                     
-                    // تسجيل النشاط
-                    this.logActivity('login', `قام ${user.fullName} بتسجيل الدخول إلى النظام`);
-                    this.addOnlineUser(user);
-                    
-                    // عرض لوحة التحكم
-                    this.showDashboard();
-                    this.showMessage('تم تسجيل الدخول بنجاح', 'success');
-                    
-                    // إعادة تعيين نموذج تسجيل الدخول
-                    document.getElementById('loginForm').reset();
-                } else {
-                    this.showError('اسم المستخدم أو كلمة المرور غير صحيحة');
-                    document.getElementById('password').value = '';
-                    document.getElementById('password').focus();
+                    if (result.success && result.data) {
+                        const user = result.data;
+                        this.currentUser = user;
+                        this.userLoginTime = new Date();
+                        
+                        // تسجيل النشاط
+                        this.logActivity('login', `قام ${user.fullName} بتسجيل الدخول إلى النظام`);
+                        this.addOnlineUser(user);
+                        
+                        // عرض لوحة التحكم
+                        this.showDashboard();
+                        this.showMessage('تم تسجيل الدخول بنجاح', 'success');
+                        
+                        // إعادة تعيين نموذج تسجيل الدخول
+                        document.getElementById('loginForm').reset();
+                    } else {
+                        this.showError('اسم المستخدم أو كلمة المرور غير صحيحة');
+                        document.getElementById('password').value = '';
+                        document.getElementById('password').focus();
+                    }
+                } catch (error) {
+                    console.error('خطأ في تسجيل الدخول:', error);
+                    this.showError('خطأ في الاتصال بالخادم');
                 }
             }
 
