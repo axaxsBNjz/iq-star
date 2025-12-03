@@ -1628,22 +1628,20 @@
                 };
             }
 
+            // تم تعديل هذه الدالة لتمكين العمل على جميع الأجهزة (تم إزالة localStorage)
+            // الآن، يتم محاكاة جلب البيانات من الخادم (Backend)
             loadData(key) {
-                try {
-                    const data = localStorage.getItem(key);
-                    return data ? JSON.parse(data) : null;
-                } catch (error) {
-                    console.error(`Error loading ${key}:`, error);
-                    return null;
-                }
+                // في النظام الجديد، يجب أن تقوم هذه الدالة بإجراء طلب (fetch) لجلب البيانات من الخادم
+                // حالياً، تم إرجاع 'null' لضمان تحميل البيانات الافتراضية (getDefault)
+                return null;
             }
 
+            // تم تعديل هذه الدالة لتمكين العمل على جميع الأجهزة (تم إزالة localStorage)
+            // الآن، يتم محاكاة حفظ البيانات على الخادم (Backend)
             saveData(key, data) {
-                try {
-                    localStorage.setItem(key, JSON.stringify(data));
-                } catch (error) {
-                    console.error(`Error saving ${key}:`, error);
-                }
+                // في النظام الجديد، يجب أن تقوم هذه الدالة بإجراء طلب (fetch) لحفظ البيانات على الخادم
+                // حالياً، لا تقوم بأي شيء لمنع الحفظ المحلي
+                // console.log(`Mock save to server for key: ${key}`, data);
             }
 
             handleLogin() {
@@ -1666,7 +1664,7 @@
                     
                     // حفظ بيانات الجلسة
                     try {
-                        localStorage.setItem('currentUser', JSON.stringify(user));
+                        // تم إزالة الحفظ المحلي لـ currentUser - يجب استخدام جلسات الخادم (Server Sessions)
                     } catch (e) {
                         console.error('Error saving session:', e);
                     }
@@ -1694,7 +1692,8 @@
 
             checkLogin() {
                 try {
-                    const savedUser = localStorage.getItem('currentUser');
+                    // تم إزالة الحفظ المحلي لـ currentUser - يجب استخدام جلسات الخادم (Server Sessions)
+                    const savedUser = null; // محاكاة عدم وجود جلسة محفوظة محلياً
                     if (savedUser) {
                         this.currentUser = JSON.parse(savedUser);
                         const userExists = this.users.some(u => u.id === this.currentUser.id);
@@ -1705,12 +1704,12 @@
                             this.logActivity('login', `استعادة جلسة ${this.currentUser.fullName}`);
                             this.showDashboard();
                         } else {
-                            localStorage.removeItem('currentUser');
+                            // تم إزالة الحذف المحلي لـ currentUser - يجب استخدام جلسات الخادم (Server Sessions)
                             this.currentUser = null;
                         }
                     }
                 } catch (error) {
-                    localStorage.removeItem('currentUser');
+                    // تم إزالة الحذف المحلي لـ currentUser - يجب استخدام جلسات الخادم (Server Sessions)
                     this.currentUser = null;
                 }
             }
@@ -1725,7 +1724,7 @@
                     
                     this.currentUser = null;
                     try {
-                        localStorage.removeItem('currentUser');
+                        // تم إزالة الحذف المحلي لـ currentUser - يجب استخدام جلسات الخادم (Server Sessions)
                     } catch (e) {
                         console.error('Error clearing session:', e);
                     }
@@ -2925,7 +2924,7 @@
                         if (user.id === this.currentUser.id) {
                             this.currentUser = user;
                             try {
-                                localStorage.setItem('currentUser', JSON.stringify(user));
+                                // تم إزالة الحفظ المحلي لـ currentUser - يجب استخدام جلسات الخادم (Server Sessions)
                             } catch (e) {
                                 console.error('Error updating session:', e);
                             }
